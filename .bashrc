@@ -19,14 +19,14 @@ export PATH
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/rasoul/Software/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('$HOME/Software/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/rasoul/Software/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/rasoul/Software/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "$HOME/Software/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/Software/anaconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/rasoul/Software/anaconda3/bin:$PATH"
+        export PATH="$HOME/Software/anaconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -59,9 +59,9 @@ alias docker-compose=podman-compose
 
 export PATH=/usr/include:$PATH
 export PATH=/usr/local/include/eigen3:$PATH
-export PATH="/home/rasoul/.cask/bin:$PATH"
+export PATH="$HOME/.cask/bin:$PATH"
  
- 
+alias dotfile='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
  
  
  
@@ -404,4 +404,4 @@ unset bash_prompt
 
 
 ### EOF ###
-alias dotfile='/usr/bin/git --git-dir=/home/rasoul/dotfiles/ --work-tree=/home/rasoul'
+
