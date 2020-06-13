@@ -218,7 +218,6 @@ let R_assign_map = "r|"
 
 
 
-
 """"""""""""""""""""""" Copy to Clipboard '"""""""""""""""""""""""""""""""""""""
 set clipboard=unnamedplus
 vnoremap <C-c> "+y

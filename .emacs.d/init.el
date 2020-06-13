@@ -488,6 +488,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- helm -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package: helm
+
 (require 'helm)
 (helm-mode 1)
 ;;(setq mode-icons-change-mode-name nil)
