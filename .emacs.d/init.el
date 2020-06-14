@@ -282,10 +282,13 @@
                              "~/Dropbox/org/bio001.org"))
 
 
+;; removes ugly horizontal lines in html-exported code 
+;; (not mandatory)
+(setq org-html-keep-old-src t)
 
 
-
-
+;; allows julia src block (requires ob-julia.el)
+(setq org-confirm-babel-evaluate nil)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
