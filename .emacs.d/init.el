@@ -314,8 +314,8 @@
                 'do-org-show-all-inline-images)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; gnuplot ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gnuplot -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; package: gnuplot
 ;; these lines enable the use of gnuplot mode
 (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
 (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot mode" t)
