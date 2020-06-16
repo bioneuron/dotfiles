@@ -78,7 +78,7 @@
  '(objed-cursor-color "#E74C3C")
  '(package-selected-packages
    (quote
-    (gnuplot docker-tramp docker smooth-scrolling minimap dashboard typit typing-game pyenv-mode elpy desktop+ helm mode-icons ein dockerfile-mode all-the-icons-dired all-the-icons all-the-icons-ibuffer company-irony-c-headers irony-eldoc irony company-irony zenburn-theme spacemacs-theme buffer-move yasnippet-snippets yasnippet flycheck company-quickhelp magit gruvbox-theme jupyter eimp company twittering-mode sml-modeline nyan-mode 2048-game fireplace pdf-tools ert-runner s cask w3m smart-mode-line-powerline-theme smart-mode-line powerline org evil doom-themes markdown-mode auctex dirtree tree-mode windata ess molokai-theme monokai-theme monokai-pro-theme dracula-theme matlab-mode)))
+    (org-bullets gnuplot docker-tramp docker smooth-scrolling minimap dashboard typit typing-game pyenv-mode elpy desktop+ helm mode-icons ein dockerfile-mode all-the-icons-dired all-the-icons all-the-icons-ibuffer company-irony-c-headers irony-eldoc irony company-irony zenburn-theme spacemacs-theme buffer-move yasnippet-snippets yasnippet flycheck company-quickhelp magit gruvbox-theme jupyter eimp company twittering-mode sml-modeline nyan-mode 2048-game fireplace pdf-tools ert-runner s cask w3m smart-mode-line-powerline-theme smart-mode-line powerline org evil doom-themes markdown-mode auctex dirtree tree-mode windata ess molokai-theme monokai-theme monokai-pro-theme dracula-theme matlab-mode)))
  '(pdf-view-midnight-colors (cons "#F8F8F2" "#272822"))
  '(pos-tip-background-color "#FFFACE")
  '(pos-tip-foreground-color "#272822")
@@ -302,6 +302,8 @@
    (ein . t)
    ))
 
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))   ;; package: org-bullets
 
 ;; inline images
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
