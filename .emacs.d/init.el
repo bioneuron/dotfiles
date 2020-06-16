@@ -78,7 +78,7 @@
  '(objed-cursor-color "#E74C3C")
  '(package-selected-packages
    (quote
-    (docker smooth-scrolling minimap dashboard typit typing-game pyenv-mode elpy desktop+ helm mode-icons ein dockerfile-mode all-the-icons-dired all-the-icons all-the-icons-ibuffer company-irony-c-headers irony-eldoc irony company-irony zenburn-theme spacemacs-theme buffer-move yasnippet-snippets yasnippet flycheck company-quickhelp magit gruvbox-theme jupyter eimp company twittering-mode sml-modeline nyan-mode 2048-game fireplace pdf-tools ert-runner s cask w3m smart-mode-line-powerline-theme smart-mode-line powerline org evil doom-themes markdown-mode auctex dirtree tree-mode windata ess molokai-theme monokai-theme monokai-pro-theme dracula-theme matlab-mode)))
+    (gnuplot docker-tramp docker smooth-scrolling minimap dashboard typit typing-game pyenv-mode elpy desktop+ helm mode-icons ein dockerfile-mode all-the-icons-dired all-the-icons all-the-icons-ibuffer company-irony-c-headers irony-eldoc irony company-irony zenburn-theme spacemacs-theme buffer-move yasnippet-snippets yasnippet flycheck company-quickhelp magit gruvbox-theme jupyter eimp company twittering-mode sml-modeline nyan-mode 2048-game fireplace pdf-tools ert-runner s cask w3m smart-mode-line-powerline-theme smart-mode-line powerline org evil doom-themes markdown-mode auctex dirtree tree-mode windata ess molokai-theme monokai-theme monokai-pro-theme dracula-theme matlab-mode)))
  '(pdf-view-midnight-colors (cons "#F8F8F2" "#272822"))
  '(pos-tip-background-color "#FFFACE")
  '(pos-tip-foreground-color "#272822")
@@ -284,18 +284,21 @@
 
 ;; removes ugly horizontal lines in html-exported code 
 ;; (not mandatory)
-(setq org-html-keep-old-src t)
+;;(setq org-html-keep-old-src t)
 
 
 ;; allows julia src block (requires ob-julia.el)
-(setq org-confirm-babel-evaluate nil)
+;;(setq org-confirm-babel-evaluate nil)
 
+(setq org-confirm-babel-evaluate nil)                            
 (org-babel-do-load-languages
  'org-babel-load-languages
  '(
    (R . t)
+   (shell . t)
    (python . t)
    (ipython . t)
+   (gnuplot . t)
    (ein . t)
    ))
 
@@ -310,6 +313,15 @@
 (global-set-key (kbd "C-c C-x C v")
                 'do-org-show-all-inline-images)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; gnuplot ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; these lines enable the use of gnuplot mode
+(autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
+(autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot mode" t)
+
+;; this line automatically causes all files with the .gp extension to be loaded into gnuplot mode
+(setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Jupyter -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package -- ein
