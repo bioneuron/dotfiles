@@ -78,7 +78,7 @@
  '(objed-cursor-color "#E74C3C")
  '(package-selected-packages
    (quote
-    (org-bullets gnuplot docker-tramp docker smooth-scrolling minimap dashboard typit typing-game pyenv-mode elpy desktop+ helm mode-icons ein dockerfile-mode all-the-icons-dired all-the-icons all-the-icons-ibuffer company-irony-c-headers irony-eldoc irony company-irony zenburn-theme spacemacs-theme buffer-move yasnippet-snippets yasnippet flycheck company-quickhelp magit gruvbox-theme jupyter eimp company twittering-mode sml-modeline nyan-mode 2048-game fireplace pdf-tools ert-runner s cask w3m smart-mode-line-powerline-theme smart-mode-line powerline org evil doom-themes markdown-mode auctex dirtree tree-mode windata ess molokai-theme monokai-theme monokai-pro-theme dracula-theme matlab-mode)))
+    (dirtree nyan-mode org-bullets gnuplot docker-tramp docker smooth-scrolling minimap dashboard typit typing-game pyenv-mode elpy desktop+ helm mode-icons ein dockerfile-mode all-the-icons-dired all-the-icons all-the-icons-ibuffer company-irony-c-headers irony-eldoc irony company-irony zenburn-theme spacemacs-theme buffer-move yasnippet-snippets yasnippet flycheck company-quickhelp magit gruvbox-theme jupyter eimp company twittering-mode sml-modeline 2048-game fireplace pdf-tools ert-runner s cask w3m smart-mode-line-powerline-theme smart-mode-line powerline org evil doom-themes markdown-mode auctex tree-mode windata ess molokai-theme monokai-theme monokai-pro-theme dracula-theme matlab-mode)))
  '(pdf-view-midnight-colors (cons "#F8F8F2" "#272822"))
  '(pos-tip-background-color "#FFFACE")
  '(pos-tip-foreground-color "#272822")
@@ -340,13 +340,6 @@
 
 (setq elpy-rpc-backend "jedi")  
 	   
-;; Standard package.el + MELPA setup
-;; (See also: https://github.com/milkypostman/melpa#usage)
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(package-initialize)
-
 
 
 ;; Standard Jedi.el setting
@@ -448,7 +441,6 @@
 
 (add-hook 'python-mode-hook 'my/python-mode-hook)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;; Elpy ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package elpy
   :ensure t
@@ -468,10 +460,12 @@
 (setenv "WORKON_HOME" "~/Software/anaconda3/envs")
 (setq python-shell-interpreter "~/Software/anaconda3/bin/python")
 (setq elpy-rpc-python-command "~/Software/anaconda3/bin/python")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Icons -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; require packages: all-the-icons and all-the-icons-dired
+;; Packages: all-the-icons, all-the-icons-dired, and mode-icons
 (require 'all-the-icons)
 (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+(mode-icons-mode) ;; mode-icons package
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Dockerfile -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dockerfile package
@@ -493,7 +487,6 @@
 (desktop-read)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Extra -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; buffer-move package
 (global-set-key (kbd "C-c C-<left>") 'buf-move-left)
 (global-set-key (kbd "C-c C-<right>") 'buf-move-right)
@@ -527,10 +520,6 @@
 
 (setq use-dialog-box nil)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Icons -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Packages: all-the-icons, all-the-icons-dired, and mode-icons
-(mode-icons-mode) ;; mode-icons package
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- helm -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package: helm
 (require 'helm)
@@ -541,14 +530,14 @@
 (global-set-key (kbd "C-x C-f") #'helm-find-files)
 (global-set-key (kbd "C-x d") #'helm-find-files)
 
-
 ;; helm-recentf to see recent files
 (require 'recentf)
 
 (recentf-mode 1)
 (global-set-key "\C-xf" 'helm-recentf)
 ;; or (global-set-key "\C-xf" 'recentf-open-files)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- undo-tree -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; undo-tree
 
 (require 'undo-tree)
@@ -577,7 +566,10 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Extra Config -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq sentence-end-double-space nil)
+
 (setq frame-title-format "Emacs")
 
 (ido-mode)
@@ -652,4 +644,8 @@
 (setq display-time-day-and-date nil)
 
 (display-time-mode -1)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- End -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;(put 'downcase-region 'disabled nil)
 

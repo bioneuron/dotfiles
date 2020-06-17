@@ -115,6 +115,8 @@ $ $USER:x:1000:1000:<name>:/home/$USER:/usr/bin/zsh
 * spaceline
 * winum
 * spaceline-all-the-icons
+* org-bullets
+* docker-tramp
 
 ** desktop-mode configuration:
 ;; Create a directory named "desktop" in .emacs.d dir
