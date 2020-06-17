@@ -111,7 +111,7 @@ $ $USER:x:1000:1000:<name>:/home/$USER:/usr/bin/zsh
 * all-the-icons
 * all-the-icons-dired
 * elpy
-* undo-yree
+* undo-tree
 * spaceline
 * winum
 * spaceline-all-the-icons
