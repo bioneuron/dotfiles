@@ -168,5 +168,12 @@ M-x minimap
 
 
 -------------------------------------------------------------------------------------------------------------
+## Emacs 
+### Autocompletion
+To toggle either of two major auto-complete modes: 
+M-x company-mode/auto-complete-mode
+
+
+-------------------------------------------------------------------------------------------------------------
 ## Inline image show for ein
 I had the same problem. First I checked that the graphics had really been created by looking into the .ipynb file (with a text editor) and opening it in HTML browser with jupyter notebook. Second (with M-x customize-group RTN ein), I toggled on the variable Ein:Output Area Inlined Images, restarted Emacs etc. and it worked.
