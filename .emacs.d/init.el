@@ -300,6 +300,7 @@
    (ipython . t)
    (gnuplot . t)
    (ein . t)
+   (latex . t)
    ))
 
 (require 'org-bullets)
@@ -314,6 +315,23 @@
   (org-display-inline-images t t))
 (global-set-key (kbd "C-c C-x C v")
                 'do-org-show-all-inline-images)
+
+
+
+
+
+
+;; latex preview
+(defun krofna-hack ()
+  (when (looking-back (rx "$ "))
+    (save-excursion
+      (backward-char 1)
+      (org-toggle-latex-fragment))))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (org-cdlatex-mode)
+            (add-hook 'post-self-insert-hook #'krofna-hack 'append 'local)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gnuplot -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
