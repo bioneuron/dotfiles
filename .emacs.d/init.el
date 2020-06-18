@@ -303,8 +303,6 @@
    (latex . t)
    ))
 
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))   ;; package: org-bullets
 
 ;; inline images
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
@@ -317,11 +315,12 @@
                 'do-org-show-all-inline-images)
 
 
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))   ;; package: org-bullets
 
 
 
-
-;; latex preview
+;; latex preview -- install cdlatex!!!!!!!!!!!!
 (defun krofna-hack ()
   (when (looking-back (rx "$ "))
     (save-excursion
@@ -332,6 +331,8 @@
           (lambda ()
             (org-cdlatex-mode)
             (add-hook 'post-self-insert-hook #'krofna-hack 'append 'local)))
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gnuplot -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
