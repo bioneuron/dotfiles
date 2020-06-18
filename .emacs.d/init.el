@@ -565,6 +565,7 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Extra Config -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(blink-cursor-mode 0) ;; disable blinking cursor
 
 (setq sentence-end-double-space nil)
 
