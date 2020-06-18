@@ -544,7 +544,7 @@
 
 ;;(set-background-color "#000000")
 ;;(add-to-list 'default-frame-alist '(background-color . "#000000"))
-(set-face-attribute 'region nil :background "#454545")
+;;(set-face-attribute 'region nil :background "#454545")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;(set-frame-parameter (selected-frame) 'alpha '(100 100))
