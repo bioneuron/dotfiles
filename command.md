@@ -174,6 +174,13 @@ To toggle either of two major auto-complete modes:
 M-x company-mode/auto-complete-mode
 
 
+
+## Emacs Keybindings:
+C-x C-x :  The commands that most interest you as far as movement is concerned is C-x C-x to toggle between the point and the mark in the buffer.
+
+
+
 -------------------------------------------------------------------------------------------------------------
 ## Inline image show for ein
 I had the same problem. First I checked that the graphics had really been created by looking into the .ipynb file (with a text editor) and opening it in HTML browser with jupyter notebook. Second (with M-x customize-group RTN ein), I toggled on the variable Ein:Output Area Inlined Images, restarted Emacs etc. and it worked.
+

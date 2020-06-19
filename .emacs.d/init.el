@@ -377,12 +377,14 @@
 (setq show-paren-delay 0) ;; shows matching parenthesis asap
 (show-paren-mode t)
 (add-hook 'after-init-hook 'global-hl-line-mode) ;; highlight current line
+(electric-pair-mode 1) ;; Matching pairs
+(setq next-line-add-newlines t) ;; C-o create new line
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Keybinding --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; buffer-move package
 (use-package buffer-move
   :ensure t
