@@ -52,6 +52,7 @@
 
 
 (use-package doom-themes
+  :ensure t
   :config
 ;;  ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -96,12 +97,13 @@
 ;;;; ido color customization
 
 (custom-set-faces
- ;;'(ido-subdir ((t (:foreground "#66ff00")))) ;; Face used by ido for highlighting subdirs in the alternatives.
- ;;'(ido-first-match ((t (:foreground "#8b0000")))) ;; Face used by ido for highlighting first match.
- ;;'(ido-only-match ((t (:foreground "#ffffff")))) ;; Face used by ido for highlighting only match.
- '(ido-only-match ((t (:background "#008000"))))
- ;;'(ido-indicator ((t (:foreground "#ffffff")))) ;; Face used by ido for highlighting its indicators (don't actually use this)
-'(ido-incomplete-regexp ((t (:foreground "#0000FF"))))) ;; Ido face for indicating incomplete regexps. (don't use this either)
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
+ '(ido-only-match ((t (:background "#008000")))))
+ ;; Ido face for indicating incomplete regexps. (don't use this either)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -424,9 +426,4 @@
  '(package-selected-packages
    (quote
     (doom-themes neotree all-the-icons-dired which-key use-package undo-tree try telephone-line org-bullets ob-ipython monokai-theme mode-icons matlab-mode jedi gnuplot flycheck ess elpy ein cdlatex auctex all-the-icons))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
