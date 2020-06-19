@@ -1,3 +1,7 @@
+;;;;;;;;;;;;;;;;; init.el file ;;;;;;;;;;;;;;;;;;;;;
+
+
+
 (setq max-lisp-eval-depth 10000)
 (setq max-specpdl-size 10000)
 
@@ -32,24 +36,52 @@
   (when (fboundp 'winner-mode)
     (winner-mode 1))
   
+(use-package ace-window
+  :ensure t
+  :config
+  (global-set-key (kbd "M-o") 'ace-window)
+  )
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- theme --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- theme --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package monokai-theme
   :ensure t
   :config
-  (load-theme 'monokai t)
+  ;;(load-theme 'monokai t)
   )
 
-(set-cursor-color "#ffffff")
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ido --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package doom-themes
+  :config
+;;  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-one t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  
+ ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+ (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+ (doom-themes-treemacs-config)
+  
+  ;; Corrects (and improves) org-mode's native fontification.
+ (doom-themes-org-config))
+
+
+
+(set-cursor-color "#ffffff")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ido --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq indo-enable-flex-matching t)
 (setq ido-everywhere t)
 (ido-mode 1)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- matlab --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- matlab --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package matlab
   :ensure matlab-mode
   :config
@@ -71,14 +103,14 @@
   :ensure t
   :init (require 'ess-site))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- AUCTEX --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- AUCTEX --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package auctex
 :defer t
 :ensure t)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gnuplot -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gnuplot -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package: gnuplot
 ;; these lines enable the use of gnuplot mode
 (use-package gnuplot
@@ -91,15 +123,16 @@
 ;; this line automatically causes all files with the .gp extension to be loaded into gnuplot mode
 (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist)))
   )
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gnuplot -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Jupyter (EIN) -;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package: gnuplot
 ;; these lines enable the use of gnuplot mode
 (use-package ein
   :ensure t)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- org mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- org mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;MY PROJECT -*- mode: org -*- 
 
@@ -183,17 +216,17 @@
             (org-cdlatex-mode)
             (add-hook 'post-self-insert-hook #'krofna-hack 'append 'local)))
 )
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Flycheck --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Flycheck --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Elpy ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Elpy ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package elpy
   :ensure t
   :init
@@ -211,9 +244,9 @@
 (setenv "WORKON_HOME" "~/Software/anaconda3/envs")
 (setq python-shell-interpreter "~/Software/anaconda3/bin/python")
 (setq elpy-rpc-python-command "~/Software/anaconda3/bin/python")
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- company-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- company-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Toggle company-mode and auto-complete-mode use <M-x company-mode/auto-complete-mode> in mini-buffer
 (use-package company
   :ensure t
@@ -238,7 +271,8 @@
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Icons and Powerline --;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Icons and Powerline --;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package mode-icons
   :ensure t
   :config
@@ -247,6 +281,12 @@
 
 (use-package all-the-icons
   :ensure t
+  )
+
+(use-package all-the-icons-dired
+  :ensure t
+  :config
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
   )
 
 (use-package telephone-line
@@ -266,9 +306,9 @@
         (accent . (telephone-line-major-mode-segment))
         (evil   . (telephone-line-airline-position-segment)))))
   )
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- undo-tree -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- undo-tree -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; undo-tree
 
 (use-package undo-tree
@@ -276,9 +316,9 @@
   :config
   (global-undo-tree-mode)
   )
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gui disable -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gui disable -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defadvice epg--start (around advice-epg-disable-agent activate)
   (let ((agent (getenv "GPG_AGENT_INFO")))
     (setenv "GPG_AGENT_INFO" nil)
@@ -288,29 +328,29 @@
 (setq use-dialog-box nil)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-hook 'prog-mode-hook 'linum-mode)
 (blink-cursor-mode 0) ;; disable blinking cursor
 (setq sentence-end-double-space nil)
 (setq frame-title-format "Emacs")
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
-(linum-mode t)
 (setq save-place '(saveplace))
 (setq inhibit-startup-screen t) ;; Show Scratch as startup
 (desktop-save-mode 1)
 (window-divider-mode 1)
 (setq default-directory "~/")
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
+(setq show-paren-delay 0) ;; shows matching parenthesis asap
+(show-paren-mode t)
+(add-hook 'after-init-hook 'global-hl-line-mode) ;; highlight current line
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; buffer-move package
 (use-package buffer-move
   :ensure t
@@ -346,14 +386,6 @@
 
 
 
-
-
-
-
-
-
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -361,7 +393,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (which-key use-package undo-tree try telephone-line org-bullets ob-ipython monokai-theme mode-icons matlab-mode jedi gnuplot flycheck ess elpy ein cdlatex auctex all-the-icons))))
+    (doom-themes neotree all-the-icons-dired which-key use-package undo-tree try telephone-line org-bullets ob-ipython monokai-theme mode-icons matlab-mode jedi gnuplot flycheck ess elpy ein cdlatex auctex all-the-icons))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
