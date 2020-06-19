@@ -97,11 +97,16 @@
  
 ;; Firs time install: (use-package matlab-mode :ensure: t ....) then change to above 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ess --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ess --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package ess
   :ensure t
-  :init (require 'ess-site))
+  :config
+  (require 'ess-site)
+  (setq ess-use-auto-complete t)
+  )
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -109,8 +114,8 @@
 (use-package auctex
 :defer t
 :ensure t)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gnuplot -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gnuplot -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package: gnuplot
 ;; these lines enable the use of gnuplot mode
 (use-package gnuplot
@@ -260,6 +265,7 @@
     ;;(setq company-show-doc-buffer nil)
     (setq company-minimum-prefix-length 3)
     (setq company-idle-delay 0.0))
+    (setq ess-use-company 'script-only)
   )
 
 ;; Standard Jedi.el setting --- After instalation, M-x jedi:install-server
