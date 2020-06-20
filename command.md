@@ -177,8 +177,15 @@ M-x company-mode/auto-complete-mode
 
 ## Emacs Keybindings:
 C-x C-x :  The commands that most interest you as far as movement is concerned is C-x C-x to toggle between the point and the mark in the buffer.
+C-S-DEL : Delete the line
+C-0 C-k : Kill the line backward
 
+C-=     : Word wil be selected. Multiple use for more selection!
+C-;     : iEdit!
+C-c '   : Open the org-mode code block in a separate edit buffer 
+M-x find-name-dired : Recursive search.
 
+C-x n   : Mini navigation!!
 
 -------------------------------------------------------------------------------------------------------------
 ## Inline image show for ein

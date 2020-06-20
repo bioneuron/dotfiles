@@ -19,11 +19,8 @@
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
- (package-refresh-contents)
- (package-install 'use-package))
-
-
-
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (use-package try
   :ensure t)
@@ -126,31 +123,29 @@
 (global-set-key (kbd "<f6>") 'revert-buffer)
 
 
+;;(use-package aggressive-indent
+;;:ensure t
+;;:config
+;;(global-aggressive-indent-mode 1)
+;;;;(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+;;)
 
 
-(use-package aggressive-indent
-  :ensure t
-  :config
-  (global-aggressive-indent-mode 1)
-  ;;(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-  )
-
-
-(defun z/swap-windows ()
-""
-(interactive)
-(ace-swap-window)
-(aw-flip-window)
-)
+;;(defun z/swap-windows ()
+;;""
+;;(interactive)
+;;(ace-swap-window)
+;;(aw-flip-window)
+;;)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Iedit --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; mark and edit all copies of the marked region simultaniously. 
+					; mark and edit all copies of the marked region simultaniously. 
 (use-package iedit
-:ensure t)
+  :ensure t)
 
 ; if you're windened, narrow to the region, if you're narrowed, widen
 ; bound to C-x n
