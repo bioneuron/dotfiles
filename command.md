@@ -117,6 +117,8 @@ $ $USER:x:1000:1000:<name>:/home/$USER:/usr/bin/zsh
 * spaceline-all-the-icons
 * org-bullets
 * docker-tramp
+* iedit
+* ivy/avy
 
 ** desktop-mode configuration:
 ;; Create a directory named "desktop" in .emacs.d dir
@@ -176,6 +178,8 @@ M-x company-mode/auto-complete-mode
 
 
 ## Emacs Keybindings:
+<C-x TAB> : Multiline indent
+
 C-x C-x :  The commands that most interest you as far as movement is concerned is C-x C-x to toggle between the point and the mark in the buffer.
 C-S-DEL : Delete the line
 C-0 C-k : Kill the line backward
@@ -187,7 +191,26 @@ M-x find-name-dired : Recursive search.
 
 C-x n   : Mini navigation!!
 
+
+flycheck:
+M-x flycheck-next-error / flycheck-previous-error    : Go to next/previous error
+
+
 -------------------------------------------------------------------------------------------------------------
 ## Inline image show for ein
 I had the same problem. First I checked that the graphics had really been created by looking into the .ipynb file (with a text editor) and opening it in HTML browser with jupyter notebook. Second (with M-x customize-group RTN ein), I toggled on the variable Ein:Output Area Inlined Images, restarted Emacs etc. and it worked.
+
+
+-------------------------------------------------------------------------------------------------------------
+## ToDo
+
+Try lsp-mode!
+
+
+
+
+
+
+
+
 
