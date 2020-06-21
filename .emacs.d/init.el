@@ -477,7 +477,7 @@ narrowed."
   :after (all-the-icons ivy)
   :custom (all-the-icons-ivy-buffer-commands '(ivy-switch-buffer-other-window ivy-switch-buffer))
   :config
-  (add-to-list 'all-the-icons-ivy-file-commands 'counsel-dired-jump)
+  (themeadd-to-list 'all-the-icons-ivy-filthemee-commands 'counsel-dired-jump)
   (add-to-list 'all-the-icons-ivy-file-commands 'counsel-find-library)
   (all-the-icons-ivy-setup))
 
@@ -488,23 +488,31 @@ narrowed."
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
   )
 
-(use-package telephone-line
+
+(use-package doom-modeline
   :ensure t
-  :config
-  (progn
-    (telephone-line-mode 1)
-    (setq telephone-line-lhs
-      '((evil   . (telephone-line-evil-tag-segment))
-        (accent . (telephone-line-vc-segment
-                   telephone-line-erc-modified-channels-segment
-                   telephone-line-process-segment))
-        (nil    . (telephone-line-minor-mode-segment
-                   telephone-line-buffer-segment))))
-(setq telephone-line-rhs
-      '((nil    . (telephone-line-misc-info-segment))
-        (accent . (telephone-line-major-mode-segment))
-        (evil   . (telephone-line-airline-position-segment)))))
-  )
+  :init (doom-modeline-mode 1))
+
+(use-package nyan-mode
+  :ensure t)
+
+;;(use-package telephone-line
+;; :ensure t
+;;  :config
+;;  (progn
+;;    (telephone-line-mode 1)
+;;    (setq telephone-line-lhs
+;;      '((evil   . (telephone-line-evil-tag-segment))
+;;        (accent . (telephone-line-vc-segment
+;;                   telephone-line-erc-modified-channels-segment
+;;                   telephone-line-process-segment))
+;;       (nil    . (telephone-line-minor-mode-segment
+;;                   telephone-line-buffer-segment))))
+;;(setq telephone-line-rhs
+;;      '((nil    . (telephone-line-misc-info-segment))
+;;        (accent . (telephone-line-major-mode-segment))
+;;        (evil   . (telephone-line-airline-position-segment)))))
+;; )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- undo-tree -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
