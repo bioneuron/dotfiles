@@ -204,7 +204,22 @@ I had the same problem. First I checked that the graphics had really been create
 -------------------------------------------------------------------------------------------------------------
 ## ToDo
 
-Try lsp-mode!
+1- Conver default Emacs config fie to an org file named ""myconf.org""! The org file name could not be "init.org"
+	because it will be renamed to "init.el" during run time and it will be mixed up with the main config file.
+2- Try lsp-mode!
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
