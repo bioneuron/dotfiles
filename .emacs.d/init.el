@@ -455,6 +455,16 @@ narrowed."
 (setq python-shell-interpreter "~/Software/anaconda3/envs/neuro001/bin/python")
 ;(setq elpy-rpc-python-command "~/Software/anaconda3/bin/python")
 
+
+        (use-package virtualenvwrapper
+          :ensure t
+          :config
+          (venv-initialize-interactive-shells)
+          (venv-initialize-eshell))
+ 
+(venv-workon "neuro001")
+(setq lsp-python-executable-cmd "~/Software/anaconda3/envs/neuro001/bin/python")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- company-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
