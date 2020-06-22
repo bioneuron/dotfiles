@@ -17,23 +17,6 @@ export PATH
 
 # User specific aliases and functions
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/Software/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/Software/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/Software/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/Software/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 
 
@@ -401,6 +384,54 @@ PROMPT_COMMAND=bash_prompt_command
 ##	which gets updated by $PROMT_COMMAND on behalf of the terminal
 bash_prompt
 unset bash_prompt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('$HOME/Software/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$HOME/Software/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/Software/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="$HOME/Software/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+
+
+
+export PATH="$HOME/Software/anaconda3/bin:$PATH"
+
+
+
 
 
 ### EOF ###

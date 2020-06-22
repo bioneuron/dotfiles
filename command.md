@@ -210,6 +210,17 @@ I had the same problem. First I checked that the graphics had really been create
 2- Try lsp-mode!
 
 
+-------------------------------------------------------------------------------------------------------------
+## lsp-mode and anaconda3
+
+1- sudo ln -s ~/Software/anaconda3/bin/python /usr/bin/python
+2- export PATH="$HOME/Software/anaconda3/bin:$PATH"
+3- cond a create -n envname python=x.x anaconda 
+4- source activate envname
+5- conda install -c conda-forge python-language-server
+6- open emacs from virtualenv terminal
+7- M-x lsp
+
 
 
 

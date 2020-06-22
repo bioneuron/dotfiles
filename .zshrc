@@ -138,7 +138,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias docker=podman
 alias dotfile='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-
+export PATH="$HOME/Software/anaconda3/bin:$PATH"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

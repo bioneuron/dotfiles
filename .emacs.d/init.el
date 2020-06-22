@@ -99,10 +99,10 @@
   )
   
   ; deletes all the whitespace when you hit backspace or delete
-  (use-package hungry-delete
-  :ensure t
-  :config
-  (global-hungry-delete-mode))
+  ;(use-package hungry-delete
+  ;:ensure t
+  ;:config
+  ;(global-hungry-delete-mode))
   
 
   (use-package multiple-cursors
@@ -243,6 +243,38 @@ narrowed."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- lsp-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq lsp-keymap-prefix "s-l")
+
+(use-package lsp-mode
+    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+            (python-mode . lsp)
+            ;; if you want which-key integration
+            (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
+
+;; optionally
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+;; if you are helm user
+;(use-package helm-lsp :ensure t :commands helm-lsp-workspace-symbol)
+;; if you are ivy user
+(use-package lsp-ivy :ensure t :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :ensure t :commands lsp-treemacs-errors-list)
+
+;; optionally if you want to use debugger
+(use-package dap-mode :ensure t)
+;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+
+
+
+(use-package company-lsp
+  :ensure t
+    :config
+    (push 'company-lsp company-backends))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- matlab --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package matlab
   :ensure matlab-mode
@@ -266,6 +298,7 @@ narrowed."
   :config
   (require 'ess-site)
   (setq ess-use-auto-complete t)
+  (setq inferior-ess-r-program "/usr/bin/R")
   )
 
 
@@ -410,24 +443,17 @@ narrowed."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Elpy ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package elpy
-  :ensure t
-  :init
-  (elpy-enable)
-  )
-
-(setq inferior-ess-r-program "/usr/bin/R")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- python -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;; Important add directory to path - it is used for ein package
  (setenv "PATH" (concat (getenv "PATH") ":~/Software/anaconda3/bin/"))
  (setq exec-path (append exec-path '("~/Software/anaconda3/bin/")))
 
-(setq python-python-command "~/Software/anaconda3/bin/python")
+(setq python-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
 (setenv "WORKON_HOME" "~/Software/anaconda3/envs")
-(setq python-shell-interpreter "~/Software/anaconda3/bin/python")
-(setq elpy-rpc-python-command "~/Software/anaconda3/bin/python")
+(setq python-shell-interpreter "~/Software/anaconda3/envs/neuro001/bin/python")
+;(setq elpy-rpc-python-command "~/Software/anaconda3/bin/python")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -451,12 +477,7 @@ narrowed."
   )
 
 ;; Standard Jedi.el setting --- After instalation, M-x jedi:install-server
-(use-package jedi
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (add-hook 'python-mode-hook 'jedi:ac-setup)
-)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -474,12 +495,8 @@ narrowed."
 
 (use-package all-the-icons-ivy
 :ensure t
-  :after (all-the-icons ivy)
-  :custom (all-the-icons-ivy-buffer-commands '(ivy-switch-buffer-other-window ivy-switch-buffer))
-  :config
-  (themeadd-to-list 'all-the-icons-ivy-filthemee-commands 'counsel-dired-jump)
-  (add-to-list 'all-the-icons-ivy-file-commands 'counsel-find-library)
-  (all-the-icons-ivy-setup))
+  :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup)
+ )
 
 
 (use-package all-the-icons-dired
@@ -514,6 +531,12 @@ narrowed."
 ;;        (evil   . (telephone-line-airline-position-segment)))))
 ;; )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package origami
+:ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Origami -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- undo-tree -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; undo-tree
@@ -607,4 +630,4 @@ narrowed."
  '(all-the-icons-ivy-buffer-commands (quote (ivy-switch-buffer-other-window ivy-switch-buffer)))
  '(package-selected-packages
    (quote
-    (iedit multiple-cursors hungry-delete counsel markdown-mode doom-themes neotree all-the-icons-dired which-key use-package undo-tree try telephone-line org-bullets ob-ipython monokai-theme mode-icons matlab-mode jedi gnuplot flycheck ess elpy ein cdlatex auctex all-the-icons))))
+    (dap-mode lsp-imenu lsp-mode iedit multiple-cursors hungry-delete counsel markdown-mode doom-themes neotree all-the-icons-dired which-key use-package undo-tree try telephone-line org-bullets ob-ipython monokai-theme mode-icons matlab-mode jedi gnuplot flycheck ess elpy ein cdlatex auctex all-the-icons))))
