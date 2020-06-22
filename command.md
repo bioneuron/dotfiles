@@ -213,6 +213,8 @@ I had the same problem. First I checked that the graphics had really been create
 -------------------------------------------------------------------------------------------------------------
 ## lsp-mode and anaconda3
 
+### lsp-python:
+
 1- sudo ln -s ~/Software/anaconda3/bin/python /usr/bin/python
 2- export PATH="$HOME/Software/anaconda3/bin:$PATH"
 3- cond a create -n envname python=x.x anaconda 
@@ -221,9 +223,18 @@ I had the same problem. First I checked that the graphics had really been create
 6- open emacs from virtualenv terminal
 7- M-x lsp
 
+### lsp-r:
+
+Install the R server:
+1. sudo dnf install libcurl-devel.x86_64  // sudo dnf search libcurl
+2. install.packages("languageserver")
 
 
+### lsp-latex:
 
+Install texlab server:
+$ sudo dnf install rust cargo
+$ cargo install --git https://github.com/latex-lsp/texlab.git
 
 
 
