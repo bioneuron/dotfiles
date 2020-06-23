@@ -120,6 +120,7 @@ $ $USER:x:1000:1000:<name>:/home/$USER:/usr/bin/zsh
 * docker-tramp
 * iedit
 * ivy/avy
+* lsp-mode
 
 ** desktop-mode configuration:
 ;; Create a directory named "desktop" in .emacs.d dir
@@ -237,18 +238,7 @@ $ sudo dnf install rust cargo
 $ cargo install --git https://github.com/latex-lsp/texlab.git
 
 
+### lsp-c++:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Install clangd server:
+$ sudo dnf install clang

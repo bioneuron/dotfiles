@@ -251,6 +251,7 @@ narrowed."
     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
 	   (python-mode . lsp)
 	   (r-mode . lsp)
+	   (c++-mode . lsp)
 	   (latex-mode . lsp)
             ;; if you want which-key integration
             (lsp-mode . lsp-enable-which-key-integration))
