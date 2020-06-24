@@ -180,19 +180,11 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- theme --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package monokai-theme
-  :ensure t
-  :config
-  ;;(load-theme 'monokai t)
-  )
-
-
-(use-package doom-themes
-  :ensure t
-  :config
+(use-package monokai-theme  :ensure t)
+(use-package doom-themes :ensure t)
 ;;  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;        doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (load-theme 'doom-one t)
 
   ;; Enable flashing mode-line on errors
@@ -205,7 +197,7 @@ narrowed."
  ;;(doom-themes-treemacs-config)
   
   ;; Corrects (and improves) org-mode's native fontification.
- (doom-themes-org-config))
+ ;;(doom-themes-org-config)
 
 
 
@@ -243,16 +235,79 @@ narrowed."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Flycheck --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- python -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; Important add directory to path - it is used for ein package
+ (setenv "PATH" (concat (getenv "PATH") ":~/Software/anaconda3/bin/"))
+ (setq exec-path (append exec-path '("~/Software/anaconda3/bin/")))
+
+(setq python-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
+(setenv "WORKON_HOME" "~/Software/anaconda3/envs")
+(setq python-shell-interpreter "~/Software/anaconda3/envs/neuro001/bin/python")
+(setq elpy-rpc-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
+
+
+(use-package virtualenvwrapper
+  :ensure t
+  :config
+  (venv-initialize-interactive-shells)
+  (venv-initialize-eshell))
+
+(venv-workon "neuro001")
+(setq lsp-python-executable-cmd "~/Software/anaconda3/envs/neuro001/bin/python")
+
+
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- company-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Toggle company-mode and auto-complete-mode use <M-x company-mode/auto-complete-mode>
+;;in mini-buffer
+
+(use-package company
+  :ensure t
+  :pin melpa
+  :config
+  (progn
+    (define-key company-active-map (kbd "C-n") 'company-select-next)
+    (define-key company-active-map (kbd "C-p") 'company-select-previous)
+    (setq company-auto-complete nil)
+    (add-hook 'after-init-hook 'global-company-mode)
+    ;;(setq company-show-doc-buffer nil)
+    (setq company-minimum-prefix-length 3)
+    (setq company-idle-delay 0.0)
+    (setq ess-use-company 'script-only))
+  )
+
+;; Standard Jedi.el setting --- After instalation, M-x jedi:install-server
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- lsp-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq lsp-keymap-prefix "s-l")
 
 (use-package lsp-mode
     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-	   (python-mode . lsp)
-	   (r-mode . lsp)
-	   (c++-mode . lsp)
-	   (latex-mode . lsp)
+	   ;(python-mode . lsp)
+	   ;(r-mode . lsp)
+	   ;(c++-mode . lsp)
+	   ;(latex-mode . lsp)
             ;; if you want which-key integration
             (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
@@ -261,6 +316,7 @@ narrowed."
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode)
+
 ;; if you are helm user
 ;(use-package helm-lsp :ensure t :commands helm-lsp-workspace-symbol)
 ;; if you are ivy user
@@ -270,7 +326,6 @@ narrowed."
 ;; optionally if you want to use debugger
 (use-package dap-mode :ensure t)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
-
 
 
 (use-package company-lsp
@@ -336,8 +391,7 @@ narrowed."
 (use-package ein
   :ensure t
   :config
-  (setq ein:output-area-inlined-images t
-	)
+  (setq ein:output-area-inlined-images t)
   )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -397,6 +451,7 @@ narrowed."
 (use-package ob-ipython
   :ensure t)
 
+
 (setq org-confirm-babel-evaluate nil)                            
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -438,61 +493,6 @@ narrowed."
 )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Flycheck --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- python -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;; Important add directory to path - it is used for ein package
- (setenv "PATH" (concat (getenv "PATH") ":~/Software/anaconda3/bin/"))
- (setq exec-path (append exec-path '("~/Software/anaconda3/bin/")))
-
-(setq python-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
-(setenv "WORKON_HOME" "~/Software/anaconda3/envs")
-(setq python-shell-interpreter "~/Software/anaconda3/envs/neuro001/bin/python")
-;(setq elpy-rpc-python-command "~/Software/anaconda3/bin/python")
-
-
-        (use-package virtualenvwrapper
-          :ensure t
-          :config
-          (venv-initialize-interactive-shells)
-          (venv-initialize-eshell))
- 
-(venv-workon "neuro001")
-(setq lsp-python-executable-cmd "~/Software/anaconda3/envs/neuro001/bin/python")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- company-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Toggle company-mode and auto-complete-mode use <M-x company-mode/auto-complete-mode>
-;;in mini-buffer
-
-(use-package company
-  :ensure t
-  :pin melpa
-  :config
-  (progn
-    (define-key company-active-map (kbd "C-n") 'company-select-next)
-    (define-key company-active-map (kbd "C-p") 'company-select-previous)
-    (setq company-auto-complete nil)
-    (add-hook 'after-init-hook 'global-company-mode)
-    ;;(setq company-show-doc-buffer nil)
-    (setq company-minimum-prefix-length 3)
-    (setq company-idle-delay 0.0)
-    (setq ess-use-company 'script-only))
-  )
-
-;; Standard Jedi.el setting --- After instalation, M-x jedi:install-server
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Icons and Powerline --;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package mode-icons
@@ -572,6 +572,7 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq file-name-handler-alist nil)
 (add-hook 'prog-mode-hook 'linum-mode)
 (blink-cursor-mode 0) ;; disable blinking cursor
 (setq sentence-end-double-space nil)
@@ -622,9 +623,18 @@ narrowed."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Hydra -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package hydra
+  :ensure t
+  :config
+  (defhydra hydra-zoom (global-map "<f2>")
+  "zoom"
+  ("g" text-scale-increase "in")
+  ("l" text-scale-decrease "out"))
+  )
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 

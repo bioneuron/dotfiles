@@ -38,6 +38,10 @@ $ xrandr -s 1280x720
 # Python
 
 ## Emacs
+
+$ conda install -c anaconda pylint flake8
+$ conda install -c conda-forge python-language-server mypy
+
  M-x run-python
  M-x jedi:install-server   // Auto-completion
 
@@ -242,3 +246,37 @@ $ cargo install --git https://github.com/latex-lsp/texlab.git
 
 Install clangd server:
 $ sudo dnf install clang
+
+
+-------------------------------------------------------------------------------------------------------------
+
+## Creating bare git repository:
+
+$ git init --bare $HOME/dotfiles
+
+$ alias dotfile='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+
+$ dotfile config status.showUntrackedFiles no
+
+$ dotfile remote add origin git@github.com:bioneuron/dotfile.git
+
+
+### add files
+$ dotfile add ~/.bashrc
+
+$ dotfile commit -m "comment"
+
+$ dotfile push origin master
+
+
+## Python
+
+### Using jupyter notebooks with a virtual environment
+
+$ source activate neuro001
+$ conda install ipykernel
+$ ipython kernel install --user --name=neuro001 
+
+
+
+
