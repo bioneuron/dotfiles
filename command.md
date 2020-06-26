@@ -225,6 +225,7 @@ I had the same problem. First I checked that the graphics had really been create
 3- cond a create -n envname python=x.x anaconda 
 4- source activate envname
 5- conda install -c conda-forge python-language-server
+6- pip install pyls-isort pyls-mypy pyls-black
 6- open emacs from virtualenv terminal
 7- M-x lsp
 
@@ -278,5 +279,6 @@ $ conda install ipykernel
 $ ipython kernel install --user --name=neuro001 
 
 
+## org-mode
 
-
+C-c C-v k clear all results in org-babel

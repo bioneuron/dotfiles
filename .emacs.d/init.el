@@ -1,7 +1,6 @@
 ;;;;;;;;;;;;;;;;; init.el file ;;;;;;;;;;;;;;;;;;;;;
 
 
-
 (setq max-lisp-eval-depth 10000)
 (setq max-specpdl-size 10000)
 
@@ -182,6 +181,7 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- theme --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package monokai-theme  :ensure t)
 (use-package doom-themes :ensure t)
+ 
 ;;  ;; Global settings (defaults)
 ;;  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
 ;;        doom-themes-enable-italic t) ; if nil, italics is universally disabled
@@ -199,6 +199,10 @@ narrowed."
   ;; Corrects (and improves) org-mode's native fontification.
  ;;(doom-themes-org-config)
 
+(use-package vi-tilde-fringe
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode))
 
 
 (set-cursor-color "#ffffff")
@@ -238,38 +242,45 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Flycheck --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package flycheck
   :ensure t
-  :init (global-flycheck-mode))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- python -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;; Important add directory to path - it is used for ein package
- (setenv "PATH" (concat (getenv "PATH") ":~/Software/anaconda3/bin/"))
- (setq exec-path (append exec-path '("~/Software/anaconda3/bin/")))
-
-(setq python-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
-(setenv "WORKON_HOME" "~/Software/anaconda3/envs")
-(setq python-shell-interpreter "~/Software/anaconda3/envs/neuro001/bin/python")
-(setq elpy-rpc-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
-
-
-(use-package virtualenvwrapper
-  :ensure t
+  :init (global-flycheck-mode)
   :config
-  (venv-initialize-interactive-shells)
-  (venv-initialize-eshell))
+   ;; Custom fringe indicator
+        (define-fringe-bitmap 'my-flycheck-fringe-indicator
+          (vector #b00000000
+                  #b00000000
+                  #b00000000
+                  #b00000000
+                  #b00000000
+                  #b00000000
+                  #b00000000
+                  #b00011100
+                  #b00111110
+                  #b00111110
+                  #b00111110
+                  #b00011100
+                  #b00000000
+                  #b00000000
+                  #b00000000
+                  #b00000000
+                  #b00000000))
 
-(venv-workon "neuro001")
-(setq lsp-python-executable-cmd "~/Software/anaconda3/envs/neuro001/bin/python")
+        (flycheck-define-error-level 'error
+          :severity 2
+          :overlay-category 'flycheck-error-overlay
+          :fringe-bitmap 'my-flycheck-fringe-indicator
+          :fringe-face 'flycheck-fringe-error)
+        (flycheck-define-error-level 'warning
+          :severity 1
+          :overlay-category 'flycheck-warning-overlay
+          :fringe-bitmap 'my-flycheck-fringe-indicator
+          :fringe-face 'flycheck-fringe-warning)
+        (flycheck-define-error-level 'info
+          :severity 0
+          :overlay-category 'flycheck-info-overlay
+          :fringe-bitmap 'my-flycheck-fringe-indicator
+          :fringe-face 'flycheck-fringe-info)
+  )
 
-
-(use-package elpy
-  :ensure t
-  :init
-  (elpy-enable))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -296,7 +307,6 @@ narrowed."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- lsp-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -333,6 +343,38 @@ narrowed."
     :config
     (push 'company-lsp company-backends))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- python -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; Important add directory to path - it is used for ein package
+ (setenv "PATH" (concat (getenv "PATH") ":~/Software/anaconda3/bin/"))
+ (setq exec-path (append exec-path '("~/Software/anaconda3/bin/")))
+
+(setq python-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
+(setenv "WORKON_HOME" "~/Software/anaconda3/envs")
+(setq python-shell-interpreter "~/Software/anaconda3/envs/neuro001/bin/python")
+(setq elpy-rpc-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
+
+
+(use-package virtualenvwrapper
+  :ensure t
+  :config
+  (venv-initialize-interactive-shells)
+  (venv-initialize-eshell))
+
+(venv-workon "neuro001")
+(setq lsp-python-executable-cmd "~/Software/anaconda3/envs/neuro001/bin/python")
+
+
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- matlab --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package matlab
   :ensure matlab-mode
@@ -348,6 +390,7 @@ narrowed."
   )
  
 ;; Firs time install: (use-package matlab-mode :ensure: t ....) then change to above 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ess --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -573,7 +616,8 @@ narrowed."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq file-name-handler-alist nil)
-(add-hook 'prog-mode-hook 'linum-mode)
+;;(add-hook 'prog-mode-hook 'linum-mode)
+(setq linum-mode -1)
 (blink-cursor-mode 0) ;; disable blinking cursor
 (setq sentence-end-double-space nil)
 (setq frame-title-format "Emacs")
@@ -583,7 +627,7 @@ narrowed."
 (setq save-place '(saveplace))
 (setq inhibit-startup-screen t) ;; Show Scratch as startup
 (desktop-save-mode 1)
-(window-divider-mode 1)
+(window-divider-mode -1)
 (setq default-directory "~/")
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (setq show-paren-delay 0) ;; shows matching parenthesis asap
@@ -636,11 +680,8 @@ narrowed."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
-
-
-
+ 
+     
 
 
 
@@ -650,7 +691,16 @@ narrowed."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(all-the-icons-ivy-buffer-commands (quote (ivy-switch-buffer-other-window ivy-switch-buffer)))
+ '(custom-enabled-themes (quote (spacemacs-dark)))
+ '(custom-safe-themes
+   (quote
+    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+ '(jdee-db-active-breakpoint-face-colors (cons "#1B2229" "#51afef"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#1B2229" "#98be65"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
+ '(objed-cursor-color "#ff6c6b")
  '(package-selected-packages
    (quote
-    (dap-mode lsp-imenu lsp-mode iedit multiple-cursors hungry-delete counsel markdown-mode doom-themes neotree all-the-icons-dired which-key use-package undo-tree try telephone-line org-bullets ob-ipython monokai-theme mode-icons matlab-mode jedi gnuplot flycheck ess elpy ein cdlatex auctex all-the-icons))))
+    (vi-tilde-fringe with-namespace which-key virtualenvwrapper use-package undo-tree try spacemacs-theme origami org-bullets ob-ipython nyan-mode multiple-cursors monokai-theme mode-icons matlab-mode lsp-ui lsp-ivy iedit gnuplot fzf flycheck expand-region ess elpy ein doom-themes doom-modeline dirtree dap-mode counsel company-lsp cdlatex buffer-move beacon auctex all-the-icons-ivy all-the-icons-dired)))
+ '(rustic-ansi-faces
+   ["#282c34" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#bbc2cf"]))
