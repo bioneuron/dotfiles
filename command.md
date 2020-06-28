@@ -229,6 +229,11 @@ I had the same problem. First I checked that the graphics had really been create
 6- open emacs from virtualenv terminal
 7- M-x lsp
 
+### Change virtual environment
+M-x pyvenv-workon
+(optional)
+M-x revert-buffer // to show the python version in status bar
+
 ### lsp-r:
 
 Install the R server:
