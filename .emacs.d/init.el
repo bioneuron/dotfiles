@@ -522,6 +522,13 @@ narrowed."
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
 
 
+;; company
+(defun add-pcomplete-to-capf ()
+  (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+
+(add-hook 'org-mode-hook #'add-pcomplete-to-capf)
+
+
 (use-package org-bullets
 :ensure t
 :config 
@@ -718,20 +725,15 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; end ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default default default italic underline success warning error])
- '(custom-enabled-themes (quote (monokai)))
- '(custom-safe-themes
-   (quote
-    ("f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default)))
  '(package-selected-packages
    (quote
-    (esup with-namespace which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try spacemacs-theme origami org-bullets ob-ipython nyan-mode multiple-cursors monokai-theme mode-icons matlab-mode lsp-ui lsp-ivy iedit gnuplot fzf flycheck expand-region ess elpy ein doom-themes doom-modeline dirtree dap-mode counsel company-lsp cdlatex buffer-move beacon auctex all-the-icons-ivy all-the-icons-dired))))
+    (magit dirtree buffer-move undo-tree origami nyan-mode doom-modeline all-the-icons-dired all-the-icons-ivy all-the-icons mode-icons cdlatex org-bullets ob-ipython ein gnuplot auctex ess matlab-mode elpy virtualenvwrapper company-lsp dap-mode lsp-treemacs lsp-ivy lsp-ui company flycheck vi-tilde-fringe doom-themes monokai-theme iedit expand-region multiple-cursors beacon counsel fzf ace-window which-key try use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -739,8 +741,3 @@ narrowed."
  ;; If there is more than one, they won't work right.
  '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
  '(ido-only-match ((t (:background "#008000")))))
-
-
-
-
-
