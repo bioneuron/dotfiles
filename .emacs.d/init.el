@@ -6,12 +6,14 @@
   (require 'package)
   (setq package-enable-at-startup nil)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; start ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
 (setq max-lisp-eval-depth 10000)
 (setq max-specpdl-size 10000)
+
 
 ;(require 'package)
 
@@ -47,12 +49,10 @@
 
 (use-package fzf :ensure t)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- navigation --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package counsel
-  :ensure t
+   (use-package counsel
+:ensure t
   :bind
   (("M-y" . counsel-yank-pop)
    :map ivy-minibuffer-map
@@ -69,6 +69,7 @@
   (setq ivy-count-format "%d/%d ")
   (setq ivy-display-style 'fancy))
 
+
   (use-package swiper
   :ensure t
   :bind (("C-s" . swiper-isearch)
@@ -84,6 +85,7 @@
     (setq ivy-display-style 'fancy)
     (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
     ))
+
 
 (use-package avy
 :ensure t
@@ -110,6 +112,7 @@
   ;:config
   ;(global-hungry-delete-mode))
   
+
   (use-package multiple-cursors
   :ensure t)
 
@@ -121,10 +124,12 @@
 
 (setq save-interprogram-paste-before-kill t)
 
+
 (global-auto-revert-mode 1) ;; you might not want this
 (setq auto-revert-verbose nil) ;; or this
 (global-set-key (kbd "<f5>") 'revert-buffer)
 (global-set-key (kbd "<f6>") 'revert-buffer)
+
 
 ;;(use-package aggressive-indent
 ;;:ensure t
@@ -133,6 +138,7 @@
 ;;;;(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
 ;;)
 
+
 ;;(defun z/swap-windows ()
 ;;""
 ;;(interactive)
@@ -140,11 +146,12 @@
 ;;(aw-flip-window)
 ;;)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Iedit --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; mark and edit all copies of the marked region simultaniously. 
+					; mark and edit all copies of the marked region simultaniously. 
 (use-package iedit
   :ensure t)
 
@@ -181,7 +188,6 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- theme --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package monokai-theme  :ensure t)
 (use-package doom-themes :ensure t)
  
@@ -207,12 +213,11 @@ narrowed."
   :config
   (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode))
 
-(set-cursor-color "#ffffff")
 
+(set-cursor-color "#ffffff")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ido --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (setq indo-enable-flex-matching t)
 (setq ido-everywhere t)
 (ido-mode 1)
@@ -244,7 +249,6 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Flycheck --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode)
@@ -286,10 +290,10 @@ narrowed."
           :fringe-face 'flycheck-fringe-info)
   )
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- company-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; Toggle company-mode and auto-complete-mode use <M-x company-mode/auto-complete-mode>
 ;;in mini-buffer
 
@@ -308,6 +312,7 @@ narrowed."
   )
 
 ;; Standard Jedi.el setting --- After instalation, M-x jedi:install-server
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -340,14 +345,16 @@ narrowed."
 (use-package dap-mode :ensure t)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
+
 (use-package company-lsp
   :ensure t
     :config
     (push 'company-lsp company-backends))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- python -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ;; Important add directory to path - it is used for ein package
  (setenv "PATH" (concat (getenv "PATH") ":~/Software/anaconda3/bin/"))
@@ -358,8 +365,8 @@ narrowed."
 ;;(setq python-shell-interpreter "~/Software/anaconda3/envs/neuro001/bin/python")
 ;(setq elpy-rpc-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
 
+
 (use-package virtualenvwrapper
-  :defer t
   :ensure t
   :config
   (venv-initialize-interactive-shells)
@@ -368,16 +375,12 @@ narrowed."
 ;;(venv-workon "neuro001")
 ;(setq lsp-python-executable-cmd "~/Software/anaconda3/envs/neuro001/bin/python")
 
-;(use-package elpy
-;  :ensure t
-;  :init
-;  (elpy-enable))
 
 (use-package elpy
   :ensure t
-  :defer t
   :init
-  (advice-add 'python-mode :before 'elpy-enable))
+  (elpy-enable))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -395,8 +398,7 @@ narrowed."
   (matlab-cedet-setup)
   )
  
-;; Firs time install: (use-package matlab-mode :ensure: t ....) then change to above
-
+;; Firs time install: (use-package matlab-mode :ensure: t ....) then change to above 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ess --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -413,15 +415,13 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- AUCTEX --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package auctex
-  :defer t
-  :ensure t)
+:defer t
+:ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gnuplot -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; package: gnuplot
 ;; these lines enable the use of gnuplot mode
 (use-package gnuplot
@@ -438,17 +438,16 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Jupyter (EIN) -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;; package: gnuplot
+;; these lines enable the use of gnuplot mode
 (use-package ein
   :ensure t
   :config
   (setq ein:output-area-inlined-images t)
   )
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Markdown --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
@@ -462,6 +461,7 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- org mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;MY PROJECT -*- mode: org -*- 
+
 
 ;; Set to the location of your Org files on your local system
 (setq org-directory "~/Dropbox/org")
@@ -499,8 +499,10 @@ narrowed."
                              "~/Dropbox/org/bio001.org"))
 
 
+
 (use-package ob-ipython
   :ensure t)
+
 
 (setq org-confirm-babel-evaluate nil)                            
 (org-babel-do-load-languages
@@ -514,12 +516,6 @@ narrowed."
    (ein . t)
    (latex . t)
    ))
-
-;; company
-(defun add-pcomplete-to-capf ()
-  (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
-
-(add-hook 'org-mode-hook #'add-pcomplete-to-capf)
 
 
 ;; inline images
@@ -547,11 +543,10 @@ narrowed."
             (org-cdlatex-mode)
             (add-hook 'post-self-insert-hook #'krofna-hack 'append 'local)))
 )
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Icons and Powerline --;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Icons and Powerline --;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package mode-icons
   :ensure t
   :config
@@ -578,9 +573,7 @@ narrowed."
 
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode 1)
-  )
-
+  :init (doom-modeline-mode 1))
 
 (use-package nyan-mode
   :ensure t)
@@ -602,11 +595,9 @@ narrowed."
 ;;        (accent . (telephone-line-major-mode-segment))
 ;;        (evil   . (telephone-line-airline-position-segment)))))
 ;; )
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package origami
 :ensure t)
 
@@ -620,11 +611,9 @@ narrowed."
   :config
   (global-undo-tree-mode)
   )
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gui disable -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defadvice epg--start (around advice-epg-disable-agent activate)
   (let ((agent (getenv "GPG_AGENT_INFO")))
     (setenv "GPG_AGENT_INFO" nil)
@@ -632,11 +621,9 @@ narrowed."
     (setenv "GPG_AGENT_INFO" agent)))
 
 (setq use-dialog-box nil)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (setq file-name-handler-alist nil)
 ;;(add-hook 'prog-mode-hook 'linum-mode)
 (setq linum-mode -1)
@@ -661,8 +648,8 @@ narrowed."
 ;;(setq visible-bell -1)
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-set-key (kbd "<f5>") 'revert-buffer)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Keybinding --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; buffer-move package
@@ -705,8 +692,8 @@ narrowed."
 (set-window-fringes (selected-window) 0 0) 
      
 
+
 (use-package magit
-  :defer t
   :ensure t)
 
 
@@ -729,5 +716,31 @@ narrowed."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; end ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; end ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(custom-enabled-themes (quote (monokai)))
+ '(custom-safe-themes
+   (quote
+    ("f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default)))
+ '(package-selected-packages
+   (quote
+    (esup with-namespace which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try spacemacs-theme origami org-bullets ob-ipython nyan-mode multiple-cursors monokai-theme mode-icons matlab-mode lsp-ui lsp-ivy iedit gnuplot fzf flycheck expand-region ess elpy ein doom-themes doom-modeline dirtree dap-mode counsel company-lsp cdlatex buffer-move beacon auctex all-the-icons-ivy all-the-icons-dired))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
+ '(ido-only-match ((t (:background "#008000")))))
+
+
+
+
+
