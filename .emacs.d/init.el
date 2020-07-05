@@ -114,7 +114,13 @@
   
 
   (use-package multiple-cursors
-  :ensure t)
+    :ensure t
+    :config
+    (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+    ;(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+    ;(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+    ;(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+    )
 
   ; expand the marked region in semantic increments (negative prefix to reduce region)
   (use-package expand-region
@@ -211,7 +217,8 @@ narrowed."
 (use-package vi-tilde-fringe
   :ensure t
   :config
-  (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode))
+  ;;(add-hook 'prog-mode-hook 'vi-tilde-fringe-mode)
+  )
 
 
 (set-cursor-color "#ffffff")
@@ -380,7 +387,6 @@ narrowed."
   :ensure t
   :init
   (elpy-enable))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -602,9 +608,11 @@ narrowed."
 ;;        (accent . (telephone-line-major-mode-segment))
 ;;        (evil   . (telephone-line-airline-position-segment)))))
 ;; )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package origami
 :ensure t)
 
@@ -683,6 +691,20 @@ narrowed."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Matching Parents -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(defun match-paren (arg)
+  "Go to the matching paren if on a paren; otherwise insert %."
+  (interactive "p")
+  (cond ((looking-at "\\s(") (forward-list 1) (backward-char 1))
+	((looking-at "\\s)") (forward-char 1) (backward-list 1))
+	(t (self-insert-command (or arg 1)))))
+
+(global-set-key "%" 'match-paren)
+
+   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Hydra -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package hydra
@@ -705,10 +727,7 @@ narrowed."
 
 
 
-
-
-
-
+          
 
 
 
@@ -731,9 +750,81 @@ narrowed."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(compilation-message-face (quote default))
+ '(custom-enabled-themes (quote (monokai)))
+ '(custom-safe-themes
+   (quote
+    ("71e5acf6053215f553036482f3340a5445aee364fb2e292c70d9175fb0cc8af7" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "9efb2d10bfb38fe7cd4586afb3e644d082cbcdb7435f3d1e8dd9413cbe5e61fc" "e2acbf379aa541e07373395b977a99c878c30f20c3761aac23e9223345526bcc" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "912cac216b96560654f4f15a3a4d8ba47d9c604cbc3b04801e465fb67a0234f0" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" default)))
+ '(fci-rule-color "#3C3D37")
+ '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+ '(highlight-tail-colors
+   (quote
+    (("#3C3D37" . 0)
+     ("#679A01" . 20)
+     ("#4BBEAE" . 30)
+     ("#1DB4D0" . 50)
+     ("#9A8F21" . 60)
+     ("#A75B00" . 70)
+     ("#F309DF" . 85)
+     ("#3C3D37" . 100))))
+ '(hl-todo-keyword-faces
+   (quote
+    (("TODO" . "#dc752f")
+     ("NEXT" . "#dc752f")
+     ("THEM" . "#2d9574")
+     ("PROG" . "#4f97d7")
+     ("OKAY" . "#4f97d7")
+     ("DONT" . "#f2241f")
+     ("FAIL" . "#f2241f")
+     ("DONE" . "#86dc2f")
+     ("NOTE" . "#b1951d")
+     ("KLUDGE" . "#b1951d")
+     ("HACK" . "#b1951d")
+     ("TEMP" . "#b1951d")
+     ("FIXME" . "#dc752f")
+     ("XXX+" . "#dc752f")
+     ("\\?\\?\\?+" . "#dc752f"))))
+ '(jdee-db-active-breakpoint-face-colors (cons "#1B2229" "#51afef"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#1B2229" "#98be65"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
+ '(magit-diff-use-overlays nil)
+ '(objed-cursor-color "#ff6c6b")
  '(package-selected-packages
    (quote
-    (magit dirtree buffer-move undo-tree origami nyan-mode doom-modeline all-the-icons-dired all-the-icons-ivy all-the-icons mode-icons cdlatex org-bullets ob-ipython ein gnuplot auctex ess matlab-mode elpy virtualenvwrapper company-lsp dap-mode lsp-treemacs lsp-ivy lsp-ui company flycheck vi-tilde-fringe doom-themes monokai-theme iedit expand-region multiple-cursors beacon counsel fzf ace-window which-key try use-package))))
+    (spacemacs-theme magit dirtree buffer-move undo-tree origami nyan-mode doom-modeline all-the-icons-dired all-the-icons-ivy all-the-icons mode-icons cdlatex org-bullets ob-ipython ein gnuplot auctex ess matlab-mode elpy virtualenvwrapper company-lsp dap-mode lsp-treemacs lsp-ivy lsp-ui company flycheck vi-tilde-fringe doom-themes monokai-theme iedit expand-region multiple-cursors beacon counsel fzf ace-window which-key try use-package)))
+ '(pdf-view-midnight-colors (cons "#bbc2cf" "#282c34"))
+ '(pos-tip-background-color "#FFFACE")
+ '(pos-tip-foreground-color "#272822")
+ '(python-indent-guess-indent-offset-verbose nil)
+ '(rustic-ansi-faces
+   ["#282c34" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#bbc2cf"])
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#F92672")
+     (40 . "#CF4F1F")
+     (60 . "#C26C0F")
+     (80 . "#E6DB74")
+     (100 . "#AB8C00")
+     (120 . "#A18F00")
+     (140 . "#989200")
+     (160 . "#8E9500")
+     (180 . "#A6E22E")
+     (200 . "#729A1E")
+     (220 . "#609C3C")
+     (240 . "#4E9D5B")
+     (260 . "#3C9F79")
+     (280 . "#A1EFE4")
+     (300 . "#299BA6")
+     (320 . "#2896B5")
+     (340 . "#2790C3")
+     (360 . "#66D9EF"))))
+ '(vc-annotate-very-old-color nil)
+ '(weechat-color-list
+   (quote
+    (unspecified "#272822" "#3C3D37" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

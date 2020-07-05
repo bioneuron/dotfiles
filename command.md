@@ -287,3 +287,30 @@ $ ipython kernel install --user --name=neuro001
 ## org-mode
 
 C-c C-v k clear all results in org-babel
+
+
+-------------------------------------------------------------------------------------------------------------
+
+## Bookmark
+
+M-x C-x r m    : make bookmark
+M-x C-x r b    : view bookmark list
+
+-------------------------------------------------------------------------------------------------------------
+## Rectangle
+C-x +    : Restore window size
+
+C-x r-<KEY> : Rectangle Manipulations
+
+C-x r r : copy rectangle to register
+C-x r y : yank as rectangle
+
+-------------------------------------------------------------------------------------------------------------
+
+## Recover File
+
+M-x recover-file <RET> foo.c <RET>
+yes <RET>
+C-x C-s
+
+-------------------------------------------------------------------------------------------------------------

@@ -180,7 +180,7 @@ bindsym $mod+o exec opera
 bindsym $mod+c exec /snap/bin/code
 bindsym $mod+n exec nautilus
 bindsym $mod+g exec gnome-software
-
+bindsym $mod+m exec emacs-26.3
 
 # Cloud Storage
 exec --no-startup-id dropbox start -i
