@@ -464,7 +464,7 @@ narrowed."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- org mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- org-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;MY PROJECT -*- mode: org -*- 
 
@@ -556,6 +556,22 @@ narrowed."
             (org-cdlatex-mode)
             (add-hook 'post-self-insert-hook #'krofna-hack 'append 'local)))
 )
+
+;; Linewrap | (org-fill-paragraph)
+
+
+(setq-default fill-column 120)
+(define-key org-mode-map  "\M-q" 'toggle-truncate-lines)
+
+(defun unfill-paragraph ()
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
+(defun unfill-region ()
+  (interactive)
+   (let ((fill-column (point-max)))
+     (fill-region  (region-beginning) (region-end) nil)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -703,8 +719,35 @@ narrowed."
 
 (global-set-key "%" 'match-paren)
 
-   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Projectile -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package projectile
+    :ensure t
+    :bind (:map projectile-mode-map
+                  ("s-p" . 'projectile-command-map)
+                  ("C-c p" . 'projectile-command-map)
+                )
+  
+    :config 
+    (setq projectile-completion-system 'ivy)
+
+    (projectile-mode +1))
+
+
+(use-package ibuffer-projectile
+:ensure t
+:config 
+(add-hook 'ibuffer-hook
+    (lambda ()
+      (ibuffer-projectile-set-filter-groups)
+      (unless (eq ibuffer-sorting-mode 'alphabetic)
+        (ibuffer-do-sort-by-alphabetic))))
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Hydra -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package hydra
@@ -756,7 +799,7 @@ narrowed."
  '(custom-enabled-themes (quote (monokai)))
  '(custom-safe-themes
    (quote
-    ("71e5acf6053215f553036482f3340a5445aee364fb2e292c70d9175fb0cc8af7" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "9efb2d10bfb38fe7cd4586afb3e644d082cbcdb7435f3d1e8dd9413cbe5e61fc" "e2acbf379aa541e07373395b977a99c878c30f20c3761aac23e9223345526bcc" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "912cac216b96560654f4f15a3a4d8ba47d9c604cbc3b04801e465fb67a0234f0" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" default)))
+    ("82360e5f96244ce8cc6e765eeebe7788c2c5f3aeb96c1a765629c5c7937c0b5b" "fe94e2e42ccaa9714dd0f83a5aa1efeef819e22c5774115a9984293af609fce7" "71e5acf6053215f553036482f3340a5445aee364fb2e292c70d9175fb0cc8af7" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "9efb2d10bfb38fe7cd4586afb3e644d082cbcdb7435f3d1e8dd9413cbe5e61fc" "e2acbf379aa541e07373395b977a99c878c30f20c3761aac23e9223345526bcc" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" "2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" "912cac216b96560654f4f15a3a4d8ba47d9c604cbc3b04801e465fb67a0234f0" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" default)))
  '(fci-rule-color "#3C3D37")
  '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
  '(highlight-tail-colors

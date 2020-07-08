@@ -314,3 +314,20 @@ yes <RET>
 C-x C-s
 
 -------------------------------------------------------------------------------------------------------------
+
+## Org-mode
+
+### Linewrap
+
+(setq-default fill-column 120)
+(define-key org-mode-map  "\M-q" 'toggle-truncate-lines)
+
+(defun unfill-paragraph ()
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
+(defun unfill-region ()
+  (interactive)
+   (let ((fill-column (point-max)))
+     (fill-region  (region-beginning) (region-end) nil)))
