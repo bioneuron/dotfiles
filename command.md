@@ -287,7 +287,7 @@ $ ipython kernel install --user --name=neuro001
 ## org-mode
 
 C-c C-v k clear all results in org-babel
-
+C-c C-x C-f * // Bold the selection
 
 -------------------------------------------------------------------------------------------------------------
 

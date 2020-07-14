@@ -47,7 +47,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- navigation --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    (use-package counsel
-:ensure t
+  :ensure t
   :bind
   (("M-y" . counsel-yank-pop)
    :map ivy-minibuffer-map
@@ -104,7 +104,6 @@
   ;:config
   ;(global-hungry-delete-mode))
   
-
   (use-package multiple-cursors
     :ensure t
     :config
@@ -121,7 +120,6 @@
   (global-set-key (kbd "C-=") 'er/expand-region))
 
 (setq save-interprogram-paste-before-kill t)
-
 
 (global-auto-revert-mode 1) ;; you might not want this
 (setq auto-revert-verbose nil) ;; or this
@@ -218,6 +216,10 @@ narrowed."
   )
 
 (set-cursor-color "#ffffff")
+					; divide line
+(set-face-background 'vertical-border "#898989")
+(set-face-foreground 'vertical-border (face-background 'vertical-border))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ido --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -226,16 +228,16 @@ narrowed."
 (ido-mode 1)
 
 ;;; M-x configurations
-(global-set-key
-     "\M-x"
-     (lambda ()
-       (interactive)
-       (call-interactively
-        (intern
-         (ido-completing-read
-          "M-x "
-          (all-completions "" obarray 'commandp))))))
-
+;(global-set-key
+;     "\M-x"
+;     (lambda ()
+;       (interactive)
+;       (call-interactively
+;        (intern
+;         (ido-completing-read
+;          "M-x "
+;          (all-completions "" obarray 'commandp))))))
+;
 ;;;; ido color customization
 
 (custom-set-faces
@@ -291,6 +293,14 @@ narrowed."
           :fringe-face 'flycheck-fringe-info)
   )
 
+
+;(use-package flycheck-pos-tip
+;  :ensure t
+;  :config
+;(with-eval-after-load 'flycheck
+;  (flycheck-pos-tip-mode))
+;  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- company-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -312,6 +322,10 @@ narrowed."
   )
 
 ;; Standard Jedi.el setting --- After instalation, M-x jedi:install-server
+
+(use-package company-box
+  :ensure t
+  :hook (company-mode . company-box-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -455,6 +469,11 @@ narrowed."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- org-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package htmlize
+  :ensure t)
+
+
+
 ;;MY PROJECT -*- mode: org -*- 
 ;; Set to the location of your Org files on your local system
 (setq org-directory "~/Dropbox/org")
@@ -551,8 +570,11 @@ narrowed."
    (let ((fill-column (point-max)))
      (fill-region  (region-beginning) (region-end) nil)))
 
-(define-key org-mode-map (kbd "C-c fp") 'fill-paragraph)
-(define-key org-mode-map (kbd "C-c up") 'unfill-paragraph)
+(define-key org-mode-map (kbd "C-c f p") 'fill-paragraph)
+(define-key org-mode-map (kbd "C-c u p") 'unfill-paragraph)
+
+(define-key org-mode-map (kbd "C-c f r") 'fill-region)
+(define-key org-mode-map (kbd "C-c u r") 'unfill-region)
 
 ;; highlighing
 (setq org-hide-emphasis-markers t)
@@ -594,7 +616,18 @@ narrowed."
 
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode 1))
+  :init (doom-modeline-mode 1)
+  :config
+  (setq doom-modeline-height 20)
+  (setq doom-modeline-bar-width 3)
+  )
+
+;(use-package spaceline
+;  :ensure t
+;  :config
+;  (require 'spaceline-config)
+;  (spaceline-emacs-theme)
+;  )
 
 (use-package nyan-mode
   :ensure t)
@@ -622,7 +655,7 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package origami
-:ensure t)
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Origami -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -649,7 +682,7 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq file-name-handler-alist nil)
 ;;(add-hook 'prog-mode-hook 'linum-mode)
-(setq linum-mode -1)
+;(setq linum-mode -1)
 (blink-cursor-mode 0) ;; disable blinking cursor
 (setq sentence-end-double-space nil)
 (setq frame-title-format "Emacs")
@@ -671,6 +704,12 @@ narrowed."
 ;;(setq visible-bell -1)
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-set-key (kbd "<f5>") 'revert-buffer)
+
+(defun nolinum ()
+  (global-linum-mode 0)
+)
+(add-hook 'org-mode-hook 'nolinum)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Keybinding --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -764,6 +803,16 @@ narrowed."
 
 
 
+ ;(setq-default left-margin-width 2 right-margin-width 4) ; Define new widths.
+ ;(set-window-buffer nil (current-buffer)) ; Use them now.
+
+;(defun my-set-margins ()
+;  "Set margins in current buffer."
+;  (setq left-margin-width 2)
+;  (setq right-margin-width 4))
+
+;(add-hook 'text-mode-hook 'my-set-margins)
+;(set-face-attribute 'fringe nil :background "#2E2920" :foreground "#2E2920") ;; margin color
 
 
 
@@ -776,3 +825,64 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(compilation-message-face (quote default))
+ '(custom-enabled-themes (quote (doom-one)))
+ '(custom-safe-themes
+   (quote
+    ("2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" default)))
+ '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+ '(highlight-tail-colors
+   (quote
+    (("#3C3D37" . 0)
+     ("#679A01" . 20)
+     ("#4BBEAE" . 30)
+     ("#1DB4D0" . 50)
+     ("#9A8F21" . 60)
+     ("#A75B00" . 70)
+     ("#F309DF" . 85)
+     ("#3C3D37" . 100))))
+ '(magit-diff-use-overlays nil)
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/org/task.org" "~/Dropbox/org/neuro001.org" "~/Dropbox/org/covid-19.org" "~/Dropbox/org/bio001.org")))
+ '(package-selected-packages
+   (quote
+    (which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try spacemacs-theme posframe pos-tip origami org-bullets ob-ipython nyan-mode multiple-cursors monokai-theme mode-icons matlab-mode magit lsp-ui lsp-ivy iedit ibuffer-projectile gnuplot fzf flycheck expand-region ess elpy ein doom-themes doom-modeline dirtree dap-mode counsel company-lsp company-box cdlatex buffer-move beacon auctex all-the-icons-ivy all-the-icons-dired)))
+ '(pos-tip-background-color "#FFFACE")
+ '(pos-tip-foreground-color "#272822")
+ '(weechat-color-list
+   (quote
+    (unspecified "#272822" "#3C3D37" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
+ '(ido-only-match ((t (:background "#008000")))))
+
+
+
+
+
+
+
+
+(set-cursor-color "#ffffff")
+					; divide line
+(set-face-background 'vertical-border "#898989")
+(set-face-foreground 'vertical-border (face-background 'vertical-border))
+
+
+
+
+
+
