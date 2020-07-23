@@ -1,5 +1,4 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; init.el file ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (setq gc-cons-threshold 100000000)
 
 (let ((file-name-handler-alist nil))
@@ -9,7 +8,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- START -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  
 (setq max-lisp-eval-depth 10000)
 (setq max-specpdl-size 10000)
 
@@ -27,201 +25,42 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(use-package try
-  :ensure t)
+(use-package try :ensure t)
 
 (use-package which-key
-  :ensure t
-  :config (which-key-mode))
+    :ensure t
+    :config (which-key-mode))
 
-  (when (fboundp 'winner-mode)
-    (winner-mode 1))
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
   
 (use-package ace-window
-  :ensure t
-  :config
-  (global-set-key (kbd "M-o") 'ace-window)
-  )
+    :ensure t
+    :config
+    (global-set-key (kbd "M-o") 'ace-window))
 
 (use-package fzf :ensure t)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- navigation --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   (use-package counsel
-  :ensure t
-  :bind
-  (("M-y" . counsel-yank-pop)
-   :map ivy-minibuffer-map
-   ("M-y" . ivy-next-line)))
-
-  (use-package ivy
-  :ensure t
-  :diminish (ivy-mode)
-  :bind (("C-x b" . ivy-switch-buffer))
-  :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "%d/%d ")
-  (setq ivy-display-style 'fancy))
-
-  (use-package swiper
-  :ensure t
-  :bind (("C-s" . swiper-isearch)
-	 ("C-r" . swiper-isearch)
-	 ("C-c C-r" . ivy-resume)
-	 ("M-x" . counsel-M-x)
-	 ;;("C-x C-f" . counsel-find-file)
-	 )
-  :config
-  (progn
-    (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-display-style 'fancy)
-    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-    ))
-
-(use-package avy
-:ensure t
-:bind ("M-s" . avy-goto-word-1)) ;; changed from char as per jcs
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- MISC --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
- ; Highlights the current cursor line
-  (global-hl-line-mode t)
-  
-  ; flashes the cursor's line when you scroll
-  (use-package beacon
-  :ensure t
-  :config
-  (beacon-mode 1)
-  ; (setq beacon-color "#666600")
-  )
-  
-  ; deletes all the whitespace when you hit backspace or delete
-  ;(use-package hungry-delete
-  ;:ensure t
-  ;:config
-  ;(global-hungry-delete-mode))
-  
-  (use-package multiple-cursors
-    :ensure t
-    :config
-    (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-    ;(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-    ;(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-    ;(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-    )
-
-  ; expand the marked region in semantic increments (negative prefix to reduce region)
-  (use-package expand-region
-  :ensure t
-  :config 
-  (global-set-key (kbd "C-=") 'er/expand-region))
-
-(setq save-interprogram-paste-before-kill t)
-
-(global-auto-revert-mode 1) ;; you might not want this
-(setq auto-revert-verbose nil) ;; or this
-(global-set-key (kbd "<f5>") 'revert-buffer)
-(global-set-key (kbd "<f6>") 'revert-buffer)
-
-;;(use-package aggressive-indent
-;;:ensure t
-;;:config
-;;(global-aggressive-indent-mode 1)
-;;;;(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-;;)
-
-;;(defun z/swap-windows ()
-;;""
-;;(interactive)
-;;(ace-swap-window)
-;;(aw-flip-window)
-;;)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- eshell --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package exec-path-from-shell
-  :ensure t
-  :config
-  (exec-path-from-shell-initialize))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Iedit --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; mark and edit all copies of the marked region simultaniously. 
-(use-package iedit
-  :ensure t)
-
-; if you're windened, narrow to the region, if you're narrowed, widen
-; bound to C-x n
-(defun narrow-or-widen-dwim (p)
-"If the buffer is narrowed, it widens. Otherwise, it narrows intelligently.
-Intelligently means: region, org-src-block, org-subtree, or defun,
-whichever applies first.
-Narrowing to org-src-block actually calls `org-edit-src-code'.
-
-With prefix P, don't widen, just narrow even if buffer is already
-narrowed."
-(interactive "P")
-(declare (interactive-only))
-(cond ((and (buffer-narrowed-p) (not p)) (widen))
-((region-active-p)
-(narrow-to-region (region-beginning) (region-end)))
-((derived-mode-p 'org-mode)
-;; `org-edit-src-code' is not a real narrowing command.
-;; Remove this first conditional if you don't want it.
-(cond ((ignore-errors (org-edit-src-code))
-(delete-other-windows))
-((org-at-block-p)
-(org-narrow-to-block))
-(t (org-narrow-to-subtree))))
-(t (narrow-to-defun))))
-
-;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
-;; This line actually replaces Emacs' entire narrowing keymap, that's
-;; how much I like this command. Only copy it if that's what you want.
-(define-key ctl-x-map "n" #'narrow-or-widen-dwim)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- theme --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package monokai-theme  :ensure t)
-(use-package doom-themes :ensure t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Eshell -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Eshell C-l support
+ (defun eshell-clear-buffer ()
+ "Clear terminal"
+ (interactive)
+ (let ((inhibit-read-only t))
+ (erase-buffer)
+ (eshell-send-input)))
+ (add-hook 'eshell-mode-hook
+ '(lambda()
+ (local-set-key (kbd
+		 "C-l") 'eshell-clear-buffer)))
  
-;;  ;; Global settings (defaults)
-;;  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-;;        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'monokai t)
-
-  ;; Enable flashing mode-line on errors
-  ;;(doom-themes-visual-bell-config)
-  
- ;; Enable custom neotree theme (all-the-icons must be installed!)
-  ;;(doom-themes-neotree-config)
-  ;; or for treemacs users
- ;;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
- ;;(doom-themes-treemacs-config)
-  
-  ;; Corrects (and improves) org-mode's native fontification.
- ;;(doom-themes-org-config)
-
-(use-package vi-tilde-fringe
-  :ensure t
-  :config
- ;; (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode)
-  )
-
-(set-cursor-color "#ffffff")
-					; divide line
-(set-face-background 'vertical-border "#898989")
-(set-face-foreground 'vertical-border (face-background 'vertical-border))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Focus -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package focus :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ido --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq indo-enable-flex-matching t)
 (setq ido-everywhere t)
@@ -251,48 +90,290 @@ narrowed."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ivy/swiper/counsel --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package counsel
+    :ensure t
+    :bind
+    (("M-y" . counsel-yank-pop)
+    :map ivy-minibuffer-map
+    ("M-y" . ivy-next-line)))
+
+(use-package ivy
+    :ensure t
+    :diminish (ivy-mode)
+    :bind (("C-x b" . ivy-switch-buffer))
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "%d/%d ")
+    (setq ivy-display-style 'fancy))
+
+(use-package swiper
+    :ensure t
+    :bind (("C-s" . swiper-isearch)
+	   ("C-r" . swiper-isearch)
+	   ("C-c C-r" . ivy-resume)
+	   ("M-x" . counsel-M-x)
+	   ;;("C-x C-f" . counsel-find-file)
+	   )
+    :config
+    (progn
+	(ivy-mode 1)
+	(setq ivy-use-virtual-buffers t)
+	(setq ivy-display-style 'fancy)
+	(define-key read-expression-map (kbd "C-r") 'counsel-expression-history)))
+
+(use-package avy
+    :ensure t
+    :bind ("M-s" . avy-goto-word-1)) ;; changed from char as per jcs
+
+(use-package ivy-rich
+    :ensure t
+    :config
+    (ivy-rich-mode 1))
+
+(use-package smex :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- elfeed -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq elfeed-db-directory "~/Dropbox/Apps/elfeed/elfeeddb")
+
+  (defun mz/elfeed-browse-url (&optional use-generic-p)
+    "Visit the current entry in your browser using `browse-url'.
+  If there is a prefix argument, visit the current entry in the
+  browser defined by `browse-url-generic-program'."
+    (interactive "P")
+    (let ((entries (elfeed-search-selected)))
+      (cl-loop for entry in entries
+               do (if use-generic-p
+                      (browse-url-generic (elfeed-entry-link entry))
+                    (browse-url (elfeed-entry-link entry))))
+      (mapc #'elfeed-search-update-entry entries)
+      (unless (or elfeed-search-remain-on-entry (use-region-p))
+      ;;(forward-line)
+)))
+
+(defun elfeed-mark-all-as-read ()
+      (interactive)
+      (mark-whole-buffer)
+      (elfeed-search-untag-all-unread))
+
+;;functions to support syncing .elfeed between machines
+;;makes sure elfeed reads index from disk before launching
+(defun bjm/elfeed-load-db-and-open ()
+    "Wrapper to load the elfeed db from disk before opening"
+    (interactive)
+    (elfeed-db-load)
+    (elfeed)
+    (elfeed-search-update--force))
+
+;;write to disk when quiting
+(defun bjm/elfeed-save-db-and-bury ()
+    "Wrapper to save the elfeed db to disk before burying buffer"
+    (interactive)
+    (elfeed-db-save)
+    (quit-window))
+
+(use-package elfeed
+    :ensure t
+    :bind (:map elfeed-search-mode-map
+		)
+    :config
+    (defalias 'elfeed-toggle-star
+	  (elfeed-expose #'elfeed-search-toggle-all 'star))
+    (global-set-key (kbd "C-x w") 'elfeed))
+
+(use-package elfeed-goodies
+    :ensure t
+    :config
+    (elfeed-goodies/setup))
+
+
+(use-package elfeed-org
+    :ensure t
+    :config
+    (elfeed-org)
+    (setq rmh-elfeed-org-files (list "~/Dropbox/Apps/elfeed/elfeed.org")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- MISC --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ; Highlights the current cursor line
+ ; (global-hl-line-mode t)
+  
+  ; flashes the cursor's line when you scroll
+  ;(use-package beacon
+  ;:ensure t
+  ;:config
+  ;(beacon-mode 1)
+  ; (setq beacon-color "#666600")
+  ;)
+  
+  ; deletes all the whitespace when you hit backspace or delete
+  ;(use-package hungry-delete
+  ;:ensure t
+  ;:config
+  ;(global-hungry-delete-mode))
+
+(use-package multiple-cursors
+    :ensure t
+    :config
+    (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+    ;(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+    ;(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+    ;(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+)
+
+					; expand the marked region in semantic increments (negative prefix to reduce region)
+(use-package expand-region
+    :ensure t
+    :config 
+    (global-set-key (kbd "C-=") 'er/expand-region))
+
+(setq save-interprogram-paste-before-kill t)
+
+;;(use-package aggressive-indent
+;;:ensure t
+;;:config
+;;(global-aggressive-indent-mode 1)
+;;;;(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+;;)
+
+;;(defun z/swap-windows ()
+;;""
+;;(interactive)
+;;(ace-swap-window)
+;;(aw-flip-window)
+;;)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- eshell --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package exec-path-from-shell
+    :ensure t
+    :config
+    (exec-path-from-shell-initialize))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Iedit --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; mark and edit all copies of the marked region simultaniously. 
+(use-package iedit :ensure t)
+
+; if you're windened, narrow to the region, if you're narrowed, widen
+; bound to C-x n
+(defun narrow-or-widen-dwim (p)
+    "If the buffer is narrowed, it widens. Otherwise, it narrows intelligently.
+    Intelligently means: region, org-src-block, org-subtree, or defun,
+    whichever applies first.
+    Narrowing to org-src-block actually calls `org-edit-src-code'.
+
+    With prefix P, don't widen, just narrow even if buffer is already
+    narrowed."
+    (interactive "P")
+    (declare (interactive-only))
+    (cond ((and (buffer-narrowed-p) (not p)) (widen))
+    ((region-active-p)
+    (narrow-to-region (region-beginning) (region-end)))
+    ((derived-mode-p 'org-mode)
+    ;; `org-edit-src-code' is not a real narrowing command.
+    ;; Remove this first conditional if you don't want it.
+    (cond ((ignore-errors (org-edit-src-code))
+    (delete-other-windows))
+    ((org-at-block-p)
+    (org-narrow-to-block))
+    (t (org-narrow-to-subtree))))
+    (t (narrow-to-defun))))
+
+;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
+;; This line actually replaces Emacs' entire narrowing keymap, that's
+;; how much I like this command. Only copy it if that's what you want.
+(define-key ctl-x-map "n" #'narrow-or-widen-dwim)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- theme --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package monokai-theme  :ensure t)
+(use-package doom-themes :ensure t)
+ 
+;;  ;; Global settings (defaults)
+;;  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+(load-theme 'doom-one t)
+
+  ;; Enable flashing mode-line on errors
+  ;;(doom-themes-visual-bell-config)
+  
+ ;; Enable custom neotree theme (all-the-icons must be installed!)
+  ;;(doom-themes-neotree-config)
+  ;; or for treemacs users
+ ;;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+ ;;(doom-themes-treemacs-config)
+  
+  ;; Corrects (and improves) org-mode's native fontification.
+ ;;(doom-themes-org-config)
+
+(use-package vi-tilde-fringe
+    :ensure t
+    :config
+    ;; (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode)
+)
+
+(set-cursor-color "#ffffff")
+; divide line
+(set-face-background 'vertical-border "#898989")
+(set-face-foreground 'vertical-border (face-background 'vertical-border))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Flycheck --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode)
-  :config
-   ;; Custom fringe indicator
-        (define-fringe-bitmap 'my-flycheck-fringe-indicator
-          (vector #b00000000
-                  #b00000000
-                  #b00000000
-                  #b00000000
-                  #b00000000
-                  #b00000000
-                  #b00000000
-                  #b00011100
-                  #b00111110
-                  #b00111110
-                  #b00111110
-                  #b00011100
-                  #b00000000
-                  #b00000000
-                  #b00000000
-                  #b00000000
-                  #b00000000))
+    :ensure t
+    :init (global-flycheck-mode)
+    :config
+     ;; Custom fringe indicator
+	  (define-fringe-bitmap 'my-flycheck-fringe-indicator
+	    (vector #b00000000
+		    #b00000000
+		    #b00000000
+		    #b00000000
+		    #b00000000
+		    #b00000000
+		    #b00000000
+		    #b00011100
+		    #b00111110
+		    #b00111110
+		    #b00111110
+		    #b00011100
+		    #b00000000
+		    #b00000000
+		    #b00000000
+		    #b00000000
+		    #b00000000))
 
-        (flycheck-define-error-level 'error
-          :severity 2
-          :overlay-category 'flycheck-error-overlay
-          :fringe-bitmap 'my-flycheck-fringe-indicator
-          :fringe-face 'flycheck-fringe-error)
-        (flycheck-define-error-level 'warning
-          :severity 1
-          :overlay-category 'flycheck-warning-overlay
-          :fringe-bitmap 'my-flycheck-fringe-indicator
-          :fringe-face 'flycheck-fringe-warning)
-        (flycheck-define-error-level 'info
-          :severity 0
-          :overlay-category 'flycheck-info-overlay
-          :fringe-bitmap 'my-flycheck-fringe-indicator
-          :fringe-face 'flycheck-fringe-info)
-  )
+	  (flycheck-define-error-level 'error
+	    :severity 2
+	    :overlay-category 'flycheck-error-overlay
+	    :fringe-bitmap 'my-flycheck-fringe-indicator
+	    :fringe-face 'flycheck-fringe-error)
+	  (flycheck-define-error-level 'warning
+	    :severity 1
+	    :overlay-category 'flycheck-warning-overlay
+	    :fringe-bitmap 'my-flycheck-fringe-indicator
+	    :fringe-face 'flycheck-fringe-warning)
+	  (flycheck-define-error-level 'info
+	    :severity 0
+	    :overlay-category 'flycheck-info-overlay
+	    :fringe-bitmap 'my-flycheck-fringe-indicator
+	    :fringe-face 'flycheck-fringe-info)
+    )
 
+;; Underline customization
+(custom-set-faces
+     '(flycheck-error ((t (:underline (:color "#F92672")))))
+     '(flycheck-warning ((t (:underline ( :color "#FD971F")))))
+     '(flycheck-info ((t (:underline ( :color "#66D9EF"))))))
 
 ;(use-package flycheck-pos-tip
 ;  :ensure t
@@ -306,31 +387,28 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- company-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Toggle company-mode and auto-complete-mode use <M-x company-mode/auto-complete-mode>
 ;;in mini-buffer
-
 (use-package company
-  :ensure t
-  :pin melpa
-  :config
-  (progn
-    (define-key company-active-map (kbd "C-n") 'company-select-next)
-    (define-key company-active-map (kbd "C-p") 'company-select-previous)
-    (add-hook 'after-init-hook 'global-company-mode)
-    ;;(setq company-show-doc-buffer nil)
-    (setq company-minimum-prefix-length 3)
-    (setq company-idle-delay 0.0)
-    (setq ess-use-company 'script-only))
-  )
+    :ensure t
+    :pin melpa
+    :config
+    (progn
+      (define-key company-active-map (kbd "C-n") 'company-select-next)
+      (define-key company-active-map (kbd "C-p") 'company-select-previous)
+      (add-hook 'after-init-hook 'global-company-mode)
+      ;;(setq company-show-doc-buffer nil)
+      (setq company-minimum-prefix-length 3)
+      (setq company-idle-delay 0.0)
+      (setq ess-use-company 'script-only)))
 
 ;; Standard Jedi.el setting --- After instalation, M-x jedi:install-server
 
 (use-package company-box
-  :ensure t
-  :hook (company-mode . company-box-mode))
+    :ensure t
+    :hook (company-mode . company-box-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- lsp-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (setq lsp-keymap-prefix "s-l")
 
 (use-package lsp-mode
@@ -345,8 +423,8 @@ narrowed."
 
 ;; optionally
 (use-package lsp-ui
-  :ensure t
-  :commands lsp-ui-mode)
+    :ensure t
+    :commands lsp-ui-mode)
 
 ;; if you are helm user
 ;(use-package helm-lsp :ensure t :commands helm-lsp-workspace-symbol)
@@ -358,75 +436,70 @@ narrowed."
 (use-package dap-mode :ensure t)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
-
 (use-package company-lsp
-  :ensure t
+    :ensure t
     :config
     (push 'company-lsp company-backends))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- python -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Important add directory to path - it is used for ein package
- (setenv "PATH" (concat (getenv "PATH") ":~/Software/anaconda3/bin/"))
- (setq exec-path (append exec-path '("~/Software/anaconda3/bin/")))
+; Important add directory to path - it is used for ein package
+(setenv "PATH" (concat (getenv "PATH") ":~/Software/anaconda3/bin/"))
+(setq exec-path (append exec-path '("~/Software/anaconda3/bin/")))
 
 ;(setq python-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
 (setenv "WORKON_HOME" "~/Software/anaconda3/envs")
 ;;(setq python-shell-interpreter "~/Software/anaconda3/envs/neuro001/bin/python")
 ;(setq elpy-rpc-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
 
-
 (use-package virtualenvwrapper
-  :ensure t
-  :config
-  (venv-initialize-interactive-shells)
-  (venv-initialize-eshell))
+    :ensure t
+    :config
+    (venv-initialize-interactive-shells)
+    (venv-initialize-eshell))
 
 ;;(venv-workon "neuro001")
 ;(setq lsp-python-executable-cmd "~/Software/anaconda3/envs/neuro001/bin/python")
 
 (use-package elpy
-  :ensure t
-  :init
-  (elpy-enable))
+    :ensure t
+    :init
+    (elpy-enable))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- matlab --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package matlab
-  :ensure matlab-mode
-  :config
-  (progn
-  (add-to-list
-   'auto-mode-alist
-   '("\\.m\\'" . matlab-mode))
-  (setq matlab-indent-function t)
-  (setq matlab-shell-command "matlab")
-  (add-hook 'matlab-mode-hook 'auto-complete-mode))
-  (matlab-cedet-setup)
-  )
+    :ensure matlab-mode
+    :config
+    (progn
+    (add-to-list
+     'auto-mode-alist
+     '("\\.m\\'" . matlab-mode))
+    (setq matlab-indent-function t)
+    (setq matlab-shell-command "matlab")
+    (add-hook 'matlab-mode-hook 'auto-complete-mode))
+    (matlab-cedet-setup)
+)
  
 ;; Firs time install: (use-package matlab-mode :ensure: t ....) then change to above 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ess --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package ess
-  :ensure t
-  :config
-  (require 'ess-site)
-  (setq ess-use-auto-complete t)
-  (setq inferior-ess-r-program "/usr/bin/R")
-  )
-
+    :ensure t
+    :config
+    ;(require 'ess-site)
+    (setq ess-use-auto-complete t)
+    (setq inferior-ess-r-program "/usr/bin/R"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- AUCTEX --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package auctex
-:defer t
-:ensure t)
+    :defer t
+    :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -434,15 +507,14 @@ narrowed."
 ;; package: gnuplot
 ;; these lines enable the use of gnuplot mode
 (use-package gnuplot
-  :ensure t
-  :config
-  (progn
-(autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
-(autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot mode" t)
+    :ensure t
+    :config
+    (progn
+    (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
+    (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot mode" t)
 
-;; this line automatically causes all files with the .gp extension to be loaded into gnuplot mode
-(setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist)))
-  )
+    ;; this line automatically causes all files with the .gp extension to be loaded into gnuplot mode
+    (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -450,29 +522,25 @@ narrowed."
 ;; package: gnuplot
 ;; these lines enable the use of gnuplot mode
 (use-package ein
-  :ensure t
-  :config
-  (setq ein:output-area-inlined-images t)
-  )
+    :ensure t
+    :config
+    (setq ein:output-area-inlined-images t))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Markdown --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package markdown-mode
-  :ensure t
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown"))
+    :ensure t
+    :commands (markdown-mode gfm-mode)
+    :mode (("README\\.md\\'" . gfm-mode)
+	   ("\\.md\\'" . markdown-mode)
+	   ("\\.markdown\\'" . markdown-mode))
+    :init (setq markdown-command "multimarkdown"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- org-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package htmlize
-  :ensure t)
-
-
+(use-package htmlize :ensure t)
 
 ;;MY PROJECT -*- mode: org -*- 
 ;; Set to the location of your Org files on your local system
@@ -491,7 +559,7 @@ narrowed."
 (setq org-image-actual-width nil)
 ;;(plist-put org-format-latex-options :scale 2.0)
 
- (setq org-publish-project-alist
+(setq org-publish-project-alist
            '(("org"
               :base-directory "~Dropbox/Apps/MobileOrg/"
               :publishing-directory "~/public_html"
@@ -509,8 +577,7 @@ narrowed."
                              "~/Dropbox/org/covid-19.org" 
                              "~/Dropbox/org/bio001.org"))
 
-(use-package ob-ipython
-  :ensure t)
+(use-package ob-ipython :ensure t)
 
 (setq org-confirm-babel-evaluate nil)                            
 (org-babel-do-load-languages
@@ -535,24 +602,23 @@ narrowed."
 (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
 
 (use-package org-bullets
-:ensure t
-:config 
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-)
+    :ensure t
+    :config 
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package cdlatex
-  :ensure t
-  :config
-  (defun krofna-hack ()
-  (when (looking-back (rx "$ "))
-    (save-excursion
-      (backward-char 1)
-      (org-toggle-latex-fragment))))
+    :ensure t
+    :config
+    (defun krofna-hack ()
+    (when (looking-back (rx "$ "))
+      (save-excursion
+	(backward-char 1)
+	(org-toggle-latex-fragment))))
 
-(add-hook 'org-mode-hook
-          (lambda ()
-            (org-cdlatex-mode)
-            (add-hook 'post-self-insert-hook #'krofna-hack 'append 'local)))
+    (add-hook 'org-mode-hook
+	    (lambda ()
+	      (org-cdlatex-mode)
+	      (add-hook 'post-self-insert-hook #'krofna-hack 'append 'local)))
 )
 
 ;; Linewrap | (org-fill-paragraph)
@@ -590,37 +656,33 @@ narrowed."
        ("+" (:strike-through t))
        )))
 
+;; Shortcuts
+;; <C-c C-,>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Icons and Powerline --;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package mode-icons
-  :ensure t
-  :config
-  (mode-icons-mode)
-  )
+    :ensure t
+    :config
+    (mode-icons-mode))
 
-(use-package all-the-icons
-  :ensure t
-  )
+(use-package all-the-icons :ensure t)
 
 (use-package all-the-icons-ivy
-:ensure t
-  :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup)
- )
+    :ensure t
+    :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 
 (use-package all-the-icons-dired
-  :ensure t
-  :config
-  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-  )
+    :ensure t
+    :config
+    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
 (use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
-  :config
-  (setq doom-modeline-height 20)
-  (setq doom-modeline-bar-width 3)
-  )
+    :ensure t
+    :init (doom-modeline-mode 1)
+    :config
+    (setq doom-modeline-height 25)
+    (setq doom-modeline-bar-width 3))
 
 ;(use-package spaceline
 ;  :ensure t
@@ -629,8 +691,7 @@ narrowed."
 ;  (spaceline-emacs-theme)
 ;  )
 
-(use-package nyan-mode
-  :ensure t)
+(use-package nyan-mode :ensure t)
 
 ;;(use-package telephone-line
 ;; :ensure t
@@ -649,24 +710,20 @@ narrowed."
 ;;        (accent . (telephone-line-major-mode-segment))
 ;;        (evil   . (telephone-line-airline-position-segment)))))
 ;; )
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package origami
-  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Origami -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package origami :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- undo-tree -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; undo-tree
-
 (use-package undo-tree
-  :ensure t
-  :config
-  (global-undo-tree-mode)
-  )
+    :ensure t
+    :config
+    (global-undo-tree-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- gui disable -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -677,6 +734,7 @@ narrowed."
     (setenv "GPG_AGENT_INFO" agent)))
 
 (setq use-dialog-box nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -703,7 +761,6 @@ narrowed."
 (setq ring-bell-function 'ignore)
 ;;(setq visible-bell -1)
 (fset 'yes-or-no-p 'y-or-n-p)
-(global-set-key (kbd "<f5>") 'revert-buffer)
 
 (defun nolinum ()
   (global-linum-mode 0)
@@ -715,30 +772,30 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Keybinding --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; buffer-move package
 (use-package buffer-move
-  :ensure t
-  :config
-  (progn
-    (global-set-key (kbd "C-c C-<left>") 'buf-move-left)
-    (global-set-key (kbd "C-c C-<right>") 'buf-move-right)
-    (global-set-key (kbd "C-c C-<down>") 'buf-move-down)
-    (global-set-key (kbd "C-c C-<up>") 'buf-move-up)
+    :ensure t
+    :config
+    (progn
+	(global-set-key (kbd "C-c C-<left>") 'buf-move-left)
+	(global-set-key (kbd "C-c C-<right>") 'buf-move-right)
+	(global-set-key (kbd "C-c C-<down>") 'buf-move-down)
+	(global-set-key (kbd "C-c C-<up>") 'buf-move-up)
 
-    (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
-    (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
-    (global-set-key (kbd "S-C-<down>") 'shrink-window)
-    (global-set-key (kbd "S-C-<up>") 'enlarge-window))
-  )
+	(global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+	(global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+	(global-set-key (kbd "S-C-<down>") 'shrink-window)
+	(global-set-key (kbd "S-C-<up>") 'enlarge-window))
+    )
 
 (use-package dirtree
-  :ensure t
-  :config
-  (windmove-default-keybindings)
-  )
+    :ensure t
+    :config
+    (windmove-default-keybindings))
+
+(global-set-key (kbd "<f5>") 'revert-buffer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Matching Parents -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun match-paren (arg)
   "Go to the matching paren if on a paren; otherwise insert %."
   (interactive "p")
@@ -751,44 +808,40 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Projectile -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package projectile
     :ensure t
     :bind (:map projectile-mode-map
                   ("s-p" . 'projectile-command-map)
                   ("C-c p" . 'projectile-command-map)
                 )
-  
     :config 
     (setq projectile-completion-system 'ivy)
 
     (projectile-mode +1))
 
 (use-package ibuffer-projectile
-:ensure t
-:config 
-(add-hook 'ibuffer-hook
-    (lambda ()
-      (ibuffer-projectile-set-filter-groups)
-      (unless (eq ibuffer-sorting-mode 'alphabetic)
-        (ibuffer-do-sort-by-alphabetic))))
+    :ensure t
+    :config 
+    (add-hook 'ibuffer-hook
+	(lambda ()
+	  (ibuffer-projectile-set-filter-groups)
+	  (unless (eq ibuffer-sorting-mode 'alphabetic)
+	    (ibuffer-do-sort-by-alphabetic))))
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Hydra -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package hydra
-  :ensure t
-  :config
-  (defhydra hydra-zoom (global-map "<f2>")
-  "zoom"
-  ("g" text-scale-increase "in")
-  ("l" text-scale-decrease "out"))
-  )
+    :ensure t
+    :config
+    (defhydra hydra-zoom (global-map "<f2>")
+    "zoom"
+    ("g" text-scale-increase "in")
+    ("l" text-scale-decrease "out"))
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (set-window-fringes (selected-window) 0 0) 
 
 (use-package magit
@@ -803,8 +856,8 @@ narrowed."
 
 
 
- ;(setq-default left-margin-width 2 right-margin-width 4) ; Define new widths.
- ;(set-window-buffer nil (current-buffer)) ; Use them now.
+;(setq-default left-margin-width 2 right-margin-width 4) ; Define new widths.
+;(set-window-buffer nil (current-buffer)) ; Use them now.
 
 ;(defun my-set-margins ()
 ;  "Set margins in current buffer."
@@ -827,50 +880,43 @@ narrowed."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(compilation-message-face (quote default))
- '(custom-enabled-themes (quote (doom-one)))
+ '(compilation-message-face 'default)
+ '(custom-enabled-themes '(doom-one))
  '(custom-safe-themes
-   (quote
-    ("2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" default)))
- '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+   '("2f1518e906a8b60fac943d02ad415f1d8b3933a5a7f75e307e6e9a26ef5bf570" default))
+ '(elfeed-feeds '("https://rss.nytimes.com/services/xml/rss/nyt/World.xml"))
+ '(highlight-changes-colors '("#FD5FF0" "#AE81FF"))
  '(highlight-tail-colors
-   (quote
-    (("#3C3D37" . 0)
+   '(("#3C3D37" . 0)
      ("#679A01" . 20)
      ("#4BBEAE" . 30)
      ("#1DB4D0" . 50)
      ("#9A8F21" . 60)
      ("#A75B00" . 70)
      ("#F309DF" . 85)
-     ("#3C3D37" . 100))))
+     ("#3C3D37" . 100)))
  '(magit-diff-use-overlays nil)
- '(org-agenda-files
-   (quote
-    ("~/Dropbox/org/task.org" "~/Dropbox/org/neuro001.org" "~/Dropbox/org/covid-19.org" "~/Dropbox/org/bio001.org")))
  '(package-selected-packages
-   (quote
-    (which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try spacemacs-theme posframe pos-tip origami org-bullets ob-ipython nyan-mode multiple-cursors monokai-theme mode-icons matlab-mode magit lsp-ui lsp-ivy iedit ibuffer-projectile gnuplot fzf flycheck expand-region ess elpy ein doom-themes doom-modeline dirtree dap-mode counsel company-lsp company-box cdlatex buffer-move beacon auctex all-the-icons-ivy all-the-icons-dired)))
+   '(which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try spacemacs-theme powerline pos-tip popup origami org-bullets ob-ipython nyan-mode multiple-cursors monokai-theme mode-icons matlab-mode magit lsp-ui lsp-ivy iedit ibuffer-projectile htmlize gnuplot fzf flycheck expand-region ess elpy ein doom-themes doom-modeline dirtree dap-mode counsel company-lsp company-box cdlatex buffer-move auctex all-the-icons-ivy all-the-icons-dired))
  '(pos-tip-background-color "#FFFACE")
  '(pos-tip-foreground-color "#272822")
  '(weechat-color-list
-   (quote
-    (unspecified "#272822" "#3C3D37" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))))
+   '(unspecified "#272822" "#3C3D37" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(flycheck-error ((t (:underline (:color "#F92672")))))
+ '(flycheck-info ((t (:underline (:color "#66D9EF")))))
+ '(flycheck-warning ((t (:underline (:color "#FD971F")))))
  '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
  '(ido-only-match ((t (:background "#008000")))))
-
-
-
 
 
 
@@ -880,9 +926,6 @@ narrowed."
 					; divide line
 (set-face-background 'vertical-border "#898989")
 (set-face-foreground 'vertical-border (face-background 'vertical-border))
-
-
-
 
 
 

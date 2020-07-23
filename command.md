@@ -288,6 +288,7 @@ $ ipython kernel install --user --name=neuro001
 
 C-c C-v k clear all results in org-babel
 C-c C-x C-f * // Bold the selection
+C-c C-, // Shortcuts
 
 -------------------------------------------------------------------------------------------------------------
 
@@ -331,3 +332,10 @@ C-x C-s
   (interactive)
    (let ((fill-column (point-max)))
      (fill-region  (region-beginning) (region-end) nil)))
+
+-------------------------------------------------------------------------------------------------------------
+
+<C-u 4 C-x TAB>  ----> indent
+<C-x C-o>        ----> delete white spaces
+<C-/>            ----> cycle
+
