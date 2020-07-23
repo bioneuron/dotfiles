@@ -43,12 +43,13 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Eshell -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Eshell C-l support
- (defun eshell-clear-buffer ()
- "Clear terminal"
- (interactive)
- (let ((inhibit-read-only t))
- (erase-buffer)
- (eshell-send-input)))
+(defun eshell-clear-buffer ()
+    "Clear terminal"
+    (interactive)
+    (let ((inhibit-read-only t))
+    (erase-buffer)
+    (eshell-send-input)))
+
  (add-hook 'eshell-mode-hook
  '(lambda()
  (local-set-key (kbd
@@ -139,16 +140,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- elfeed -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq elfeed-db-directory "~/Dropbox/Apps/elfeed/elfeeddb")
 
-  (defun mz/elfeed-browse-url (&optional use-generic-p)
+(defun mz/elfeed-browse-url (&optional use-generic-p)
     "Visit the current entry in your browser using `browse-url'.
-  If there is a prefix argument, visit the current entry in the
-  browser defined by `browse-url-generic-program'."
+    If there is a prefix argument, visit the current entry in the
+    browser defined by `browse-url-generic-program'."
     (interactive "P")
     (let ((entries (elfeed-search-selected)))
       (cl-loop for entry in entries
-               do (if use-generic-p
-                      (browse-url-generic (elfeed-entry-link entry))
-                    (browse-url (elfeed-entry-link entry))))
+	       do (if use-generic-p
+		      (browse-url-generic (elfeed-entry-link entry))
+		    (browse-url (elfeed-entry-link entry))))
       (mapc #'elfeed-search-update-entry entries)
       (unless (or elfeed-search-remain-on-entry (use-region-p))
       ;;(forward-line)
@@ -189,7 +190,6 @@
     :config
     (elfeed-goodies/setup))
 
-
 (use-package elfeed-org
     :ensure t
     :config
@@ -199,22 +199,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- MISC --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- ; Highlights the current cursor line
- ; (global-hl-line-mode t)
+;Highlights the current cursor line
+;(global-hl-line-mode t)
   
-  ; flashes the cursor's line when you scroll
-  ;(use-package beacon
-  ;:ensure t
-  ;:config
-  ;(beacon-mode 1)
-  ; (setq beacon-color "#666600")
-  ;)
+;flashes the cursor's line when you scroll
+;(use-package beacon
+;    :ensure t
+;    :config
+;    (beacon-mode 1)
+;    (setq beacon-color "#666600"))
   
-  ; deletes all the whitespace when you hit backspace or delete
-  ;(use-package hungry-delete
-  ;:ensure t
-  ;:config
-  ;(global-hungry-delete-mode))
+;deletes all the whitespace when you hit backspace or delete
+;(use-package hungry-delete
+;    :ensure t
+;    :config
+;    (global-hungry-delete-mode))
 
 (use-package multiple-cursors
     :ensure t
@@ -225,7 +224,7 @@
     ;(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 )
 
-					; expand the marked region in semantic increments (negative prefix to reduce region)
+; expand the marked region in semantic increments (negative prefix to reduce region)
 (use-package expand-region
     :ensure t
     :config 
@@ -258,11 +257,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Iedit --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; mark and edit all copies of the marked region simultaniously. 
+;mark and edit all copies of the marked region simultaniously. 
 (use-package iedit :ensure t)
 
-; if you're windened, narrow to the region, if you're narrowed, widen
-; bound to C-x n
+;if you're windened, narrow to the region, if you're narrowed, widen
+;bound to C-x n
 (defun narrow-or-widen-dwim (p)
     "If the buffer is narrowed, it widens. Otherwise, it narrows intelligently.
     Intelligently means: region, org-src-block, org-subtree, or defun,
@@ -286,9 +285,9 @@
     (t (org-narrow-to-subtree))))
     (t (narrow-to-defun))))
 
-;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
-;; This line actually replaces Emacs' entire narrowing keymap, that's
-;; how much I like this command. Only copy it if that's what you want.
+;(define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
+;This line actually replaces Emacs' entire narrowing keymap, that's
+;how much I like this command. Only copy it if that's what you want.
 (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -302,17 +301,17 @@
 ;;        doom-themes-enable-italic t) ; if nil, italics is universally disabled
 (load-theme 'doom-one t)
 
-  ;; Enable flashing mode-line on errors
-  ;;(doom-themes-visual-bell-config)
+;; Enable flashing mode-line on errors
+;;(doom-themes-visual-bell-config)
   
- ;; Enable custom neotree theme (all-the-icons must be installed!)
-  ;;(doom-themes-neotree-config)
-  ;; or for treemacs users
- ;;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
- ;;(doom-themes-treemacs-config)
+;; Enable custom neotree theme (all-the-icons must be installed!)
+;;(doom-themes-neotree-config)
+;; or for treemacs users
+;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+;(doom-themes-treemacs-config)
   
-  ;; Corrects (and improves) org-mode's native fontification.
- ;;(doom-themes-org-config)
+;; Corrects (and improves) org-mode's native fontification.
+;;(doom-themes-org-config)
 
 (use-package vi-tilde-fringe
     :ensure t
@@ -367,7 +366,7 @@
 	    :overlay-category 'flycheck-info-overlay
 	    :fringe-bitmap 'my-flycheck-fringe-indicator
 	    :fringe-face 'flycheck-fringe-info)
-    )
+)
 
 ;; Underline customization
 (custom-set-faces
@@ -376,16 +375,15 @@
      '(flycheck-info ((t (:underline ( :color "#66D9EF"))))))
 
 ;(use-package flycheck-pos-tip
-;  :ensure t
-;  :config
-;(with-eval-after-load 'flycheck
-;  (flycheck-pos-tip-mode))
-;  )
+;    :ensure t
+;    :config
+;    (with-eval-after-load 'flycheck
+;    (flycheck-pos-tip-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- company-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Toggle company-mode and auto-complete-mode use <M-x company-mode/auto-complete-mode>
+;;Toggle company-mode and auto-complete-mode use <M-x company-mode/auto-complete-mode>
 ;;in mini-buffer
 (use-package company
     :ensure t
@@ -400,7 +398,7 @@
       (setq company-idle-delay 0.0)
       (setq ess-use-company 'script-only)))
 
-;; Standard Jedi.el setting --- After instalation, M-x jedi:install-server
+;;Standard Jedi.el setting --- After instalation, M-x jedi:install-server
 
 (use-package company-box
     :ensure t
@@ -421,20 +419,20 @@
             (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
 
-;; optionally
+;;optionally
 (use-package lsp-ui
     :ensure t
     :commands lsp-ui-mode)
 
-;; if you are helm user
+;;if you are helm user
 ;(use-package helm-lsp :ensure t :commands helm-lsp-workspace-symbol)
-;; if you are ivy user
+;;if you are ivy user
 (use-package lsp-ivy :ensure t :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :ensure t :commands lsp-treemacs-errors-list)
 
-;; optionally if you want to use debugger
+;;optionally if you want to use debugger
 (use-package dap-mode :ensure t)
-;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+;;(use-package dap-LANGUAGE) to load the dap adapter for your language
 
 (use-package company-lsp
     :ensure t
@@ -926,6 +924,3 @@
 					; divide line
 (set-face-background 'vertical-border "#898989")
 (set-face-foreground 'vertical-border (face-background 'vertical-border))
-
-
-
