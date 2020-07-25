@@ -339,3 +339,12 @@ C-x C-s
 <C-x C-o>        ----> delete white spaces
 <C-/>            ----> cycle
 
+-------------------------------------------------------------------------------------------------------------
+
+## Julia
+
+install julia-mode
+
+julia to run
+revert-buffer to enable ess-julia-mode in jl file
+ess-julia-mode for autocompletion

@@ -179,7 +179,7 @@
 (use-package elfeed
     :ensure t
     :bind (:map elfeed-search-mode-map
-		)
+        	)
     :config
     (defalias 'elfeed-toggle-star
 	  (elfeed-expose #'elfeed-search-toggle-all 'star))
@@ -415,7 +415,7 @@
 	   ;(r-mode . lsp)
 	   ;(c++-mode . lsp)
 	   ;(latex-mode . lsp)
-            ;; if you want which-key integration
+           ;;if you want which-key integration
             (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
 
@@ -467,6 +467,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Julia -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package julia-mode :ensure t)
+
+;(use-package julia-repl
+;    :ensure t
+;    :config
+;    (add-hook 'julia-mode-hook 'julia-repl-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- matlab --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package matlab
     :ensure matlab-mode
@@ -490,7 +500,8 @@
     :config
     ;(require 'ess-site)
     (setq ess-use-auto-complete t)
-    (setq inferior-ess-r-program "/usr/bin/R"))
+    (setq inferior-ess-r-program "/usr/bin/R")
+    (setq inferior-julia-program-name "/usr/bin/julia"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
