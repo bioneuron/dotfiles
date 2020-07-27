@@ -747,6 +747,62 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- flyspell --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Sudo dnf install aspell-en
+;;Swedish spell check in all i text files (including LaTeX-files).
+;;These settings will not affect programming.
+
+(add-hook 'text-mode-hook '(lambda () (flyspell-mode nil)))
+;;(add-hook 'text-mode-hook '(lambda () (ispell-change-dictionary "svenska" nil)))
+
+;;don't print words in mini-buffer when scanning, so sloooow
+(setq flyspell-issue-message-flag' nil)
+
+;;auto configure language (does not work? Says "??" in mod-line)
+;;(require 'auto-dictionary)
+;;(add-hook 'flyspell-mode-hook '(lambda () (auto-dictionary-mode 1)))
+
+;;ispell=unix native spell checker, aspell=GNU's ispell, hunspell=OpenOffice & firefox
+(setq ispell-program-name "aspell"
+  ispell-extra-args '("--sug-mode=normal"))
+
+;;change dictionary: "C-c e" = engelska, "C-c s"=svenska, "C-c w"=turn off flyspell
+(add-hook 'text-mode-hook
+          '(lambda ()
+             (local-set-key (kbd "C-c s 1")
+                             (lambda()(interactive)
+                               (ispell-change-dictionary "svenska")
+                               (flyspell-mode 1)
+                               (flyspell-buffer)))
+             (local-set-key (kbd "C-c s 2")
+                             (lambda()(interactive)
+                               (ispell-change-dictionary "american")
+                               (flyspell-mode 1)
+                               (flyspell-buffer)))
+             (local-set-key (kbd "C-c s 3")
+                             (lambda()(interactive)
+                               (ispell-change-dictionary "british-ize")
+                               (flyspell-mode 1)
+                               (flyspell-buffer)))
+             (local-set-key (kbd "C-c s 4")
+                             (lambda()(interactive)
+                               (ispell-change-dictionary "british-ise")
+                               (flyspell-mode 1)
+                               (flyspell-buffer)))
+             (local-set-key (kbd "C-c s 0")
+                             (lambda()(interactive)
+                               (flyspell-mode -1)))
+             ))
+
+;; Color Configurations
+(custom-set-faces
+ '(flyspell-incorrect ((((class color)) (:foreground "red" :underline t :weight bold))))
+
+ '(flyspell-duplicate ((((class color)) (:foreground "green" :underline t :weight bold)))) 
+ )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq file-name-handler-alist nil)
 ;;(add-hook 'prog-mode-hook 'linum-mode)
@@ -940,4 +996,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
 
