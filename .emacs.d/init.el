@@ -206,8 +206,8 @@
 ;(use-package beacon
 ;    :ensure t
 ;    :config
-;    (beacon-mode 1)
-;    (setq beacon-color "#666600"))
+;   (beacon-mode 1)
+;   (setq beacon-color "#666600"))
   
 ;deletes all the whitespace when you hit backspace or delete
 ;(use-package hungry-delete
@@ -319,7 +319,6 @@
     ;; (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode)
 )
 
-(set-cursor-color "#ffffff")
 ; divide line
 (set-face-background 'vertical-border "#898989")
 (set-face-foreground 'vertical-border (face-background 'vertical-border))
@@ -752,7 +751,6 @@
 (setq file-name-handler-alist nil)
 ;;(add-hook 'prog-mode-hook 'linum-mode)
 ;(setq linum-mode -1)
-(blink-cursor-mode 0) ;; disable blinking cursor
 (setq sentence-end-double-space nil)
 (setq frame-title-format "Emacs")
 (tool-bar-mode -1)
@@ -772,6 +770,7 @@
 (setq ring-bell-function 'ignore)
 ;;(setq visible-bell -1)
 (fset 'yes-or-no-p 'y-or-n-p)
+(setq-default indicate-empty-lines t)
 
 (defun nolinum ()
   (global-linum-mode 0)
@@ -803,6 +802,35 @@
     (windmove-default-keybindings))
 
 (global-set-key (kbd "<f5>") 'revert-buffer)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Auto Remove -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Auto remove/kill Completion buffer when done
+(add-hook 'minibuffer-exit-hook
+          '(lambda ()
+             (let ((buffer "*Completions*"))
+               (and (get-buffer buffer)
+                    (kill-buffer buffer)))
+	     ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Revert all buffers -;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun revert-all-buffers ()
+  "Refreshes all open buffers from their respective files."
+  (interactive)
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (and (buffer-file-name) (not (buffer-modified-p)))
+        (revert-buffer t t t) )))
+  (message "Refreshed open files."))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- abbrevs -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq abbrev-file-name                ;; tell emacs where to read abbrev
+      "~/.emacs.d/abbrev_defs.el")    ;; definitions from...
+(setq save-abbrevs t)                 ;; (ask) save abbrevs when files are saved
+(setq-default abbrev-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -843,9 +871,29 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Cursor -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;(setq-default cursor-type 'bar)
-;(set-cursor-color "#ffffff")
-(set-cursor-color "#00ccff")
+(blink-cursor-mode 0) ; disable blinking cursor
+
+(defun djcb-set-cursor-according-to-mode ()
+  "change cursor color and type according to some minor modes."
+  (cond
+    (buffer-read-only
+      (set-cursor-color "gray")
+      (setq cursor-type 'hbar))
+    ;; valid values are t, nil, box, hollow, bar, (bar . WIDTH), hbar,
+    ;; (hbar. HEIGHT); see the docs for set-cursor-type
+    (mark-active
+     (set-cursor-color "#00ccff")
+     (setq cursor-type 'hollow-rectangle))
+    
+    (overwrite-mode
+      (set-cursor-color "red")
+      (setq cursor-type 'box))
+    (t
+      (set-cursor-color "#00ccff")
+      (setq cursor-type 'box))))
+
+;;TODO: only activate this setup if not in doc-view-mode:
+(add-hook 'post-command-hook 'djcb-set-cursor-according-to-mode)
 
 ; divide line
 (set-face-background 'vertical-border "#898989")
@@ -866,15 +914,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (set-window-fringes (selected-window) 0 0) 
 
-(use-package magit
-  :ensure t)
-
-
-
-
-
-
-
+(use-package magit :ensure t)
 
 
 
@@ -900,3 +940,4 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
