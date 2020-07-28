@@ -795,10 +795,15 @@
              ))
 
 ;; Color Configurations
-(custom-set-faces
- '(flyspell-incorrect ((((class color)) (:foreground "red" :underline t :weight bold))))
+;(custom-set-faces
+; '(flyspell-incorrect ((((class color)) (:foreground "red"  :underline t :weight bold))))
+;
+; '(flyspell-duplicate ((((class color)) (:foreground "green" :underline t :weight bold)))) 
+					; )
 
- '(flyspell-duplicate ((((class color)) (:foreground "green" :underline t :weight bold)))) 
+(custom-set-faces
+ '(flyspell-duplicate ((t (:underline "orange"))))
+ '(flyspell-incorrect  ((t (:underline "red"))))
  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -826,12 +831,15 @@
 (setq ring-bell-function 'ignore)
 ;;(setq visible-bell -1)
 (fset 'yes-or-no-p 'y-or-n-p)
-(setq-default indicate-empty-lines t)
+;(setq-default indicate-empty-lines t)
 
 (defun nolinum ()
   (global-linum-mode 0)
 )
 (add-hook 'org-mode-hook 'nolinum)
+
+(setq linum-format "%d ")
+(setq linum-format "%4d \u2502 ")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -997,8 +1005,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+					; langtool
 
+(setq langtool-language-tool-jar "~/Downloads/LanguageTool-5.0/languagetool-commandline.jar")
+(add-to-list 'load-path "~/.emacs.d/langtool/")
+(require 'langtool)
 
-
+;(add-hook 'org-mode-hook
+;           (lambda () 
+;              (add-hook 'after-save-hook 'langtool-check nil 'make-it-local)))
 
 
