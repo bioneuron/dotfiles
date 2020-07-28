@@ -771,20 +771,15 @@
           '(lambda ()
              (local-set-key (kbd "C-c s 1")
                              (lambda()(interactive)
-                               (ispell-change-dictionary "svenska")
+                               (ispell-change-dictionary "american")
                                (flyspell-mode 1)
                                (flyspell-buffer)))
              (local-set-key (kbd "C-c s 2")
                              (lambda()(interactive)
-                               (ispell-change-dictionary "american")
-                               (flyspell-mode 1)
-                               (flyspell-buffer)))
-             (local-set-key (kbd "C-c s 3")
-                             (lambda()(interactive)
                                (ispell-change-dictionary "british-ize")
                                (flyspell-mode 1)
                                (flyspell-buffer)))
-             (local-set-key (kbd "C-c s 4")
+             (local-set-key (kbd "C-c s 3")
                              (lambda()(interactive)
                                (ispell-change-dictionary "british-ise")
                                (flyspell-mode 1)
@@ -802,7 +797,7 @@
 					; )
 
 (custom-set-faces
- '(flyspell-duplicate ((t (:underline "orange"))))
+ '(flyspell-duplicate ((t (:underline "#F1948A"))))
  '(flyspell-incorrect  ((t (:underline "red"))))
  )
 
@@ -1005,8 +1000,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-					; langtool
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Langtool -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq langtool-language-tool-jar "~/Downloads/LanguageTool-5.0/languagetool-commandline.jar")
 (add-to-list 'load-path "~/.emacs.d/langtool/")
 (require 'langtool)
@@ -1014,5 +1009,26 @@
 ;(add-hook 'org-mode-hook
 ;           (lambda () 
 ;              (add-hook 'after-save-hook 'langtool-check nil 'make-it-local)))
+
+(add-hook 'text-mode-hook
+          '(lambda ()
+             (local-set-key (kbd "C-c g 1") 'langtool-check)
+
+             (local-set-key (kbd "C-c g 0") 'langtool-check-done)
+
+	     (local-set-key (kbd "C-c g n") 'langtool-goto-next-error)
+
+	     (local-set-key (kbd "C-c g p") 'langtool-goto-previous-error)
+             ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
+
+
+
 
 

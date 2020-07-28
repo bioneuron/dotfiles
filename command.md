@@ -162,7 +162,7 @@ $ sudo rsync -aP --exclude-from=/var/tmp/ignorelist /home/$USER/ /run/media/$USE
 ## Emacs Key bindings
 
 - python mode
-<C-S-<RETURN>> ----> Create blank line befor the current line
+<C-S-<RETURN>> ----> Create blank line before the current line
 <S-<RETURN>> ----> Run the current line
 
 
@@ -177,20 +177,20 @@ M-x minimap
 
 -------------------------------------------------------------------------------------------------------------
 ## Emacs 
-### Autocompletion
+### Auto-completion
 To toggle either of two major auto-complete modes: 
 M-x company-mode/auto-complete-mode
 
 
 
 ## Emacs Keybindings:
-<C-x TAB> : Multiline indent
+<C-x TAB> : Multi-line indent
 
 C-x C-x :  The commands that most interest you as far as movement is concerned is C-x C-x to toggle between the point and the mark in the buffer.
 C-S-DEL : Delete the line
 C-0 C-k : Kill the line backward
 
-C-=     : Word wil be selected. Multiple use for more selection!
+C-=     : Word Will be selected. Multiple use for more selection!
 C-;     : iEdit!
 C-c '   : Open the org-mode code block in a separate edit buffer 
 M-x find-name-dired : Recursive search.
@@ -347,4 +347,4 @@ install julia-mode
 
 julia to run
 revert-buffer to enable ess-julia-mode in jl file
-ess-julia-mode for autocompletion
+ess-julia-mode for auto-completion
