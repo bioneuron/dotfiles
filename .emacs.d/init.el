@@ -798,7 +798,7 @@
 (custom-set-faces
  '(flyspell-duplicate ((t (:underline "green"))))
  '(flyspell-incorrect  ((t (:underline "red"))))
- '(langtool-errline ((t (:background "orange" :foreground "black"))))
+ '(langtool-errline ((t (:background "red" :foreground "black"))))
  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -941,14 +941,14 @@
     ;; valid values are t, nil, box, hollow, bar, (bar . WIDTH), hbar,
     ;; (hbar. HEIGHT); see the docs for set-cursor-type
     (mark-active
-     (set-cursor-color "#00ccff")
+     (set-cursor-color "#00CCFF")
      (setq cursor-type 'hollow-rectangle))
     
     (overwrite-mode
       (set-cursor-color "red")
       (setq cursor-type 'box))
     (t
-      (set-cursor-color "#00ccff")
+      (set-cursor-color "#00CCFF")
       (setq cursor-type 'box))))
 
 ;;TODO: only activate this setup if not in doc-view-mode:
@@ -973,6 +973,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (set-window-fringes (selected-window) 0 0) 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- git -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package magit :ensure t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1003,7 +1004,6 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Langtool -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package langtool
   :ensure t
   :init
@@ -1028,9 +1028,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- English Language -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package dictionary :ensure t)
+(use-package dictionary
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c M-d") 'dictionary-lookup-definition))
 
-(use-package synosaurus :ensure t)
+(use-package synosaurus
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c M-s") 'synosaurus-lookup))
 
 ;; Meriam-Webster Dictionary
 					; 0f6d00d3-4925-450b-8581-b364b0851ace
@@ -1039,8 +1045,7 @@
 (use-package mw-thesaurus
   :ensure t
   :config
-(setq mw-thesaurus--api-key "41324f64-09d9-4897-9a01-5f8cb8138607")
-(global-set-key (kbd "C-c M-d") 'mw-thesaurus-lookup-at-point))
+(setq mw-thesaurus--api-key "41324f64-09d9-4897-9a01-5f8cb8138607"))
 
 ;; English Auto-Complete using company
 (require 'company)
@@ -1067,7 +1072,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- pdf-tools -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package pdf-tools :ensure t)
 
-
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
