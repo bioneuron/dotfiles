@@ -13,12 +13,11 @@
 
 ;(require 'package)
 
-(add-to-list
-   'package-archives
-   ;; '("melpa" . "http://stable.melpa.org/packages/") ; many packages won't show if using stable
-   '("melpa" . "http://melpa.milkbox.net/packages/")
-   t)
-
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
+;; and `package-pinned-packages`. Most users will not need or want to do this.
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -747,7 +746,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- flyspell --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- flyspell --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Sudo dnf install aspell-en
 ;;Swedish spell check in all i text files (including LaTeX-files).
 ;;These settings will not affect programming.
@@ -797,8 +796,9 @@
 					; )
 
 (custom-set-faces
- '(flyspell-duplicate ((t (:underline "#F1948A"))))
+ '(flyspell-duplicate ((t (:underline "green"))))
  '(flyspell-incorrect  ((t (:underline "red"))))
+ '(langtool-errline ((t (:background "orange" :foreground "black"))))
  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -974,6 +974,7 @@
 (set-window-fringes (selected-window) 0 0) 
 
 (use-package magit :ensure t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
@@ -997,14 +998,17 @@
 ;;; init.el ends here
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Langtool -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq langtool-language-tool-jar "~/Downloads/LanguageTool-5.0/languagetool-commandline.jar")
-(add-to-list 'load-path "~/.emacs.d/langtool/")
-(require 'langtool)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Langtool -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package langtool
+  :ensure t
+  :init
+   (setq langtool-language-tool-jar "~/Downloads/LanguageTool-5.0/languagetool-commandline.jar")  
+    :config
 
 ;(add-hook 'org-mode-hook
 ;           (lambda () 
@@ -1020,15 +1024,50 @@
 
 	     (local-set-key (kbd "C-c g p") 'langtool-goto-previous-error)
              ))
+)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- English Language -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package dictionary :ensure t)
+
+(use-package synosaurus :ensure t)
+
+;; Meriam-Webster Dictionary
+					; 0f6d00d3-4925-450b-8581-b364b0851ace
+					; 41324f64-09d9-4897-9a01-5f8cb8138607
+					;(add-to-list 'load-path "~/.emacs.d/langtool/")
+(use-package mw-thesaurus
+  :ensure t
+  :config
+(setq mw-thesaurus--api-key "41324f64-09d9-4897-9a01-5f8cb8138607")
+(global-set-key (kbd "C-c M-d") 'mw-thesaurus-lookup-at-point))
+
+;; English Auto-Complete using company
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+
+(defun text-mode-hook-setup ()
+  ;; make `company-backends' local is critcal
+  ;; or else, you will have completion in every major mode, that's very annoying!
+  (make-local-variable 'company-backends)
+  ;; company-ispell is the plugin to complete words
+  (add-to-list 'company-backends 'company-ispell))
+
+(add-hook 'text-mode-hook 'text-mode-hook-setup)
+
+(defun toggle-company-ispell ()
+  (interactive)
+  (cond
+   ((memq 'company-ispell company-backends)
+    (setq company-backends (delete 'company-ispell company-backends))
+    (message "company-ispell disabled"))
+   (t
+    (add-to-list 'company-backends 'company-ispell)
+    (message "company-ispell enabled!"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
-
-
-
-
+(use-package pdf-tools :ensure t)
 
 
 

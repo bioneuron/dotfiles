@@ -348,3 +348,12 @@ install julia-mode
 julia to run
 revert-buffer to enable ess-julia-mode in jl file
 ess-julia-mode for auto-completion
+
+-------------------------------------------------------------------------------------------------------------
+
+## English Language
+
+- dictionary package
+- synosaurus package // sudo dnf install wordnet
+
+-------------------------------------------------------------------------------------------------------------
