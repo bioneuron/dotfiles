@@ -90,7 +90,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ivy/swiper/counsel --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ivy/swiper/counsel --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package counsel
     :ensure t
     :bind
@@ -202,11 +202,8 @@
 ;(global-hl-line-mode t)
   
 ;flashes the cursor's line when you scroll
-;(use-package beacon
-;    :ensure t
-;    :config
-;   (beacon-mode 1)
-;   (setq beacon-color "#666600"))
+;(use-package beacon :ensure t)
+
   
 ;deletes all the whitespace when you hit backspace or delete
 ;(use-package hungry-delete
@@ -394,13 +391,36 @@
       ;;(setq company-show-doc-buffer nil)
       (setq company-minimum-prefix-length 3)
       (setq company-idle-delay 0.0)
-      (setq ess-use-company 'script-only)))
+      (setq ess-use-company 'script-only))
+
+    ;; English Auto-Complete using company
+      (add-hook 'after-init-hook 'global-company-mode)
+
+      (defun text-mode-hook-setup ()
+  ;; make `company-backends' local is critcal
+  ;; or else, you will have completion in every major mode, that's very annoying!
+     (make-local-variable 'company-backends)
+  ;; company-ispell is the plugin to complete words
+     (add-to-list 'company-backends 'company-ispell))
+
+     (add-hook 'text-mode-hook 'text-mode-hook-setup)
+
+     (defun toggle-company-ispell ()
+       (interactive)
+       (cond
+	((memq 'company-ispell company-backends)
+	 (setq company-backends (delete 'company-ispell company-backends))
+	 (message "company-ispell disabled"))
+	(t
+	 (add-to-list 'company-backends 'company-ispell)
+	 (message "company-ispell enabled!"))))    
+    )
 
 ;;Standard Jedi.el setting --- After instalation, M-x jedi:install-server
 
-(use-package company-box
-    :ensure t
-    :hook (company-mode . company-box-mode))
+;(use-package company-box
+;    :ensure t
+;    :hook (company-mode . company-box-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -455,7 +475,7 @@
     (venv-initialize-interactive-shells)
     (venv-initialize-eshell))
 
-;;(venv-workon "neuro001")
+;(venv-workon "neuro001")
 ;(setq lsp-python-executable-cmd "~/Software/anaconda3/envs/neuro001/bin/python")
 
 (use-package elpy
@@ -547,6 +567,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- org-mode --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+
+(use-package org 
+    :ensure t
+    :pin org)
+
 (use-package htmlize :ensure t)
 
 ;;MY PROJECT -*- mode: org -*- 
@@ -659,16 +685,99 @@
        ("_" underline)
        ("=" (:background "yellow" :foreground "black"))
 					; ("~" org-verbatim verbatim)
-       ("~" (:background "deep sky blue" :foreground "black"))
+       ("~" (:background "sky blue" :foreground "black"))
        ("+" (:strike-through t))
        )))
 
 ;; Shortcuts
 ;; <C-c C-,>
 
+(use-package olivetti
+    :ensure t
+    :config
+    (defun olivetti/org-mode ()
+	"Custom Configuration for org-mode"
+	(olivetti-mode)
+	(olivetti-set-width 120))
+
+        (add-hook 'org-mode-hook 'olivetti/org-mode))
+
+(add-hook 'org-mode-hook
+      '(lambda ()
+         (delete '("\\.pdf\\'" . default) org-file-apps)
+         (add-to-list 'org-file-apps '("\\.pdf\\'" . "evince %s"))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Icons and Powerline --;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Bibliography -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package org-ref
+  :ensure t
+  :config
+	(setq reftex-default-bibliography '("~/Dropbox/bibliography/sample/references.bib"))
+
+	;; see org-ref for use of these variables
+	(setq org-ref-bibliography-notes "~/Dropbox/bibliography/sample/notes.org"
+	      org-ref-default-bibliography '("~/Dropbox/bibliography/sample/references.bib")
+	      org-ref-pdf-directory "~/Dropbox/bibliography/sample/bibtex-pdfs/")
+	)
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Research -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; pdf-tools
+(use-package pdf-tools :ensure t)
+
+
+;;; Org-roam (causes "selceting buffer error")
+;(use-package org-roam
+;      :ensure t
+;      :hook
+;      (after-init . org-roam-mode)
+;      :custom
+;      (org-roam-directory "~/Dropbox/org/Notes/")
+;      :bind (:map org-roam-mode-map
+;              (("C-c n l" . org-roam)
+;               ("C-c n f" . org-roam-find-file)
+;               ("C-c n g" . org-roam-graph-show))
+;              :map org-mode-map
+;              (("C-c n i" . org-roam-insert))
+;              (("C-c n I" . org-roam-insert-immediate))))
+;
+;(use-package org-roam-server
+;  :ensure t
+;  :config
+;  (setq org-roam-server-mode nil
+;        org-roam-server-host "127.0.0.1"
+;        org-roam-server-port 8080
+;        org-roam-server-export-inline-images t
+;        org-roam-server-authenticate nil
+;        org-roam-server-network-poll t
+;        org-roam-server-network-arrows nil
+;        org-roam-server-network-label-truncate t
+;        org-roam-server-network-label-truncate-length 60
+;        org-roam-server-network-label-wrap-length 20))
+;
+(use-package org-noter :ensure t)
+
+(use-package academic-phrases :ensure t)
+
+(use-package ebib :ensure t)
+
+(use-package org-pdftools
+    :ensure t
+    :hook (org-load . org-pdftools-setup-link))
+
+;(use-package org-noter-pdftools
+;  :ensure t
+;  :after org-noter
+;  :config
+;  (with-eval-after-load 'pdf-annot
+;    (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Icons and Powerline --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package mode-icons
     :ensure t
     :config
@@ -827,6 +936,7 @@
 ;;(setq visible-bell -1)
 (fset 'yes-or-no-p 'y-or-n-p)
 ;(setq-default indicate-empty-lines t)
+(set-window-fringes (selected-window) 0 0) 
 
 (defun nolinum ()
   (global-linum-mode 0)
@@ -971,11 +1081,57 @@
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(set-window-fringes (selected-window) 0 0) 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- git -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- magit -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package magit :ensure t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- English Language -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package dictionary
+    :ensure t
+    :config
+    (global-set-key (kbd "C-c M-d") 'dictionary-lookup-definition))
+
+(use-package synosaurus
+    :ensure t
+    :config
+    (global-set-key (kbd "C-c M-s") 'synosaurus-lookup))
+
+;; Meriam-Webster Dictionary
+					; 0f6d00d3-4925-450b-8581-b364b0851ace
+					; 41324f64-09d9-4897-9a01-5f8cb8138607
+					;(add-to-list 'load-path "~/.emacs.d/langtool/")
+(use-package mw-thesaurus
+    :ensure t
+    :config
+    (setq mw-thesaurus--api-key "41324f64-09d9-4897-9a01-5f8cb8138607"))
+
+;; Langtool (Grammar Check)
+(use-package langtool
+    :ensure t
+    :init
+    (setq langtool-language-tool-jar "~/Downloads/LanguageTool-5.0/languagetool-commandline.jar")  
+    :config
+
+;(add-hook 'org-mode-hook
+;           (lambda () 
+;              (add-hook 'after-save-hook 'langtool-check nil 'make-it-local)))
+
+(add-hook 'text-mode-hook
+          '(lambda ()
+             (local-set-key (kbd "C-c g 1") 'langtool-check)
+
+             (local-set-key (kbd "C-c g 0") 'langtool-check-done)
+
+	     (local-set-key (kbd "C-c g n") 'langtool-goto-next-error)
+
+	     (local-set-key (kbd "C-c g p") 'langtool-goto-previous-error)
+             ))
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 
 
@@ -1002,77 +1158,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Langtool -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package langtool
-  :ensure t
-  :init
-   (setq langtool-language-tool-jar "~/Downloads/LanguageTool-5.0/languagetool-commandline.jar")  
-    :config
-
-;(add-hook 'org-mode-hook
-;           (lambda () 
-;              (add-hook 'after-save-hook 'langtool-check nil 'make-it-local)))
-
-(add-hook 'text-mode-hook
-          '(lambda ()
-             (local-set-key (kbd "C-c g 1") 'langtool-check)
-
-             (local-set-key (kbd "C-c g 0") 'langtool-check-done)
-
-	     (local-set-key (kbd "C-c g n") 'langtool-goto-next-error)
-
-	     (local-set-key (kbd "C-c g p") 'langtool-goto-previous-error)
-             ))
-)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- English Language -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package dictionary
-  :ensure t
-  :config
-  (global-set-key (kbd "C-c M-d") 'dictionary-lookup-definition))
-
-(use-package synosaurus
-  :ensure t
-  :config
-  (global-set-key (kbd "C-c M-s") 'synosaurus-lookup))
-
-;; Meriam-Webster Dictionary
-					; 0f6d00d3-4925-450b-8581-b364b0851ace
-					; 41324f64-09d9-4897-9a01-5f8cb8138607
-					;(add-to-list 'load-path "~/.emacs.d/langtool/")
-(use-package mw-thesaurus
-  :ensure t
-  :config
-(setq mw-thesaurus--api-key "41324f64-09d9-4897-9a01-5f8cb8138607"))
-
-;; English Auto-Complete using company
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-
-(defun text-mode-hook-setup ()
-  ;; make `company-backends' local is critcal
-  ;; or else, you will have completion in every major mode, that's very annoying!
-  (make-local-variable 'company-backends)
-  ;; company-ispell is the plugin to complete words
-  (add-to-list 'company-backends 'company-ispell))
-
-(add-hook 'text-mode-hook 'text-mode-hook-setup)
-
-(defun toggle-company-ispell ()
-  (interactive)
-  (cond
-   ((memq 'company-ispell company-backends)
-    (setq company-backends (delete 'company-ispell company-backends))
-    (message "company-ispell disabled"))
-   (t
-    (add-to-list 'company-backends 'company-ispell)
-    (message "company-ispell enabled!"))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- pdf-tools -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package pdf-tools :ensure t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   '("~/Dropbox/org/task.org" "~/Dropbox/org/neuro001.org" "~/Dropbox/org/covid-19.org" "~/Dropbox/org/bio001.org"))
+ '(package-selected-packages
+   '(org-ref which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try synosaurus smex origami org-pdftools org-bullets olivetti ob-ipython nyan-mode mw-thesaurus multiple-cursors monokai-theme mode-icons matlab-mode magit lsp-ui lsp-ivy langtool julia-mode ivy-rich iedit ibuffer-projectile htmlize gnuplot fzf focus flycheck expand-region esup ess emacsql-sqlite3 elpy elfeed-org elfeed-goodies ein ebib doom-themes doom-modeline dirtree dictionary dap-mode counsel company-lsp company-box cdlatex buffer-move auctex all-the-icons-ivy all-the-icons-dired academic-phrases)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(flycheck-error ((t (:underline (:color "#F92672")))))
+ '(flycheck-info ((t (:underline (:color "#66D9EF")))))
+ '(flycheck-warning ((t (:underline (:color "#FD971F")))))
+ '(flyspell-duplicate ((t (:underline "green"))))
+ '(flyspell-incorrect ((t (:underline "red"))))
+ '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
+ '(ido-only-match ((t (:background "#008000"))))
+ '(langtool-errline ((t (:background "red" :foreground "black")))))

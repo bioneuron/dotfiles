@@ -357,3 +357,11 @@ ess-julia-mode for auto-completion
 - synosaurus package // sudo dnf install wordnet
 
 -------------------------------------------------------------------------------------------------------------
+
+## Reference and pdf management:
+
+- Zotero (using zotero-better-bibtex addon: https://github.com/retorquere/zotero-better-bibtex)
+- org-ref
+- Jabref
+
+-------------------------------------------------------------------------------------------------------------
