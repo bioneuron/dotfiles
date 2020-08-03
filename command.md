@@ -365,3 +365,9 @@ ess-julia-mode for auto-completion
 - Jabref
 
 -------------------------------------------------------------------------------------------------------------
+# General
+
+## tab-bar-mode
+<C-x t>
+## Line number
+display-line-numbers-mode is better that linum-mode

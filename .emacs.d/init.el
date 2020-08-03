@@ -2,7 +2,7 @@
 (setq gc-cons-threshold 100000000)
 
 (let ((file-name-handler-alist nil))
-  (require 'package)
+  (require 'package) 
   (setq package-enable-at-startup nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -312,7 +312,7 @@
 (use-package vi-tilde-fringe
     :ensure t
     :config
-    ;; (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode)
+     (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode)
 )
 
 ; divide line
@@ -441,7 +441,7 @@
 (use-package lsp-ui
     :ensure t
     :commands lsp-ui-mode)
-
+;(setq lsp-completion-provider company-capf)
 ;;if you are helm user
 ;(use-package helm-lsp :ensure t :commands helm-lsp-workspace-symbol)
 ;;if you are ivy user
@@ -714,12 +714,12 @@
 (use-package org-ref
   :ensure t
   :config
-	(setq reftex-default-bibliography '("~/Dropbox/bibliography/sample/references.bib"))
+	(setq reftex-default-bibliography '("~/Dropbox/bibliography/ref/references.bib"))
 
 	;; see org-ref for use of these variables
-	(setq org-ref-bibliography-notes "~/Dropbox/bibliography/sample/notes.org"
-	      org-ref-default-bibliography '("~/Dropbox/bibliography/sample/references.bib")
-	      org-ref-pdf-directory "~/Dropbox/bibliography/sample/bibtex-pdfs/")
+	(setq org-ref-bibliography-notes "~/Dropbox/bibliography/ref/notes.org"
+	      org-ref-default-bibliography '("~/Dropbox/bibliography/ref/references.bib")
+	      org-ref-pdf-directory "~/Dropbox/bibliography/ref/bibtex-pdfs/")
 	)
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -727,7 +727,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Research -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; pdf-tools
 (use-package pdf-tools :ensure t)
-
 
 ;;; Org-roam (causes "selceting buffer error")
 ;(use-package org-roam
@@ -757,7 +756,7 @@
 ;        org-roam-server-network-label-truncate t
 ;        org-roam-server-network-label-truncate-length 60
 ;        org-roam-server-network-label-wrap-length 20))
-;
+
 (use-package org-noter :ensure t)
 
 (use-package academic-phrases :ensure t)
@@ -768,12 +767,12 @@
     :ensure t
     :hook (org-load . org-pdftools-setup-link))
 
-;(use-package org-noter-pdftools
-;  :ensure t
-;  :after org-noter
-;  :config
-;  (with-eval-after-load 'pdf-annot
-;    (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+(use-package org-noter-pdftools
+  :ensure t
+  :after org-noter
+  :config
+  (with-eval-after-load 'pdf-annot
+    (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -914,7 +913,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq file-name-handler-alist nil)
-;;(add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 ;(setq linum-mode -1)
 (setq sentence-end-double-space nil)
 (setq frame-title-format "Emacs")
@@ -943,8 +942,8 @@
 )
 (add-hook 'org-mode-hook 'nolinum)
 
-(setq linum-format "%d ")
-(setq linum-format "%4d \u2502 ")
+;(setq linum-format "%d ")
+;(setq linum-format "%4d \u2502 ")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1157,26 +1156,3 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   '("~/Dropbox/org/task.org" "~/Dropbox/org/neuro001.org" "~/Dropbox/org/covid-19.org" "~/Dropbox/org/bio001.org"))
- '(package-selected-packages
-   '(org-ref which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try synosaurus smex origami org-pdftools org-bullets olivetti ob-ipython nyan-mode mw-thesaurus multiple-cursors monokai-theme mode-icons matlab-mode magit lsp-ui lsp-ivy langtool julia-mode ivy-rich iedit ibuffer-projectile htmlize gnuplot fzf focus flycheck expand-region esup ess emacsql-sqlite3 elpy elfeed-org elfeed-goodies ein ebib doom-themes doom-modeline dirtree dictionary dap-mode counsel company-lsp company-box cdlatex buffer-move auctex all-the-icons-ivy all-the-icons-dired academic-phrases)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(flycheck-error ((t (:underline (:color "#F92672")))))
- '(flycheck-info ((t (:underline (:color "#66D9EF")))))
- '(flycheck-warning ((t (:underline (:color "#FD971F")))))
- '(flyspell-duplicate ((t (:underline "green"))))
- '(flyspell-incorrect ((t (:underline "red"))))
- '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
- '(ido-only-match ((t (:background "#008000"))))
- '(langtool-errline ((t (:background "red" :foreground "black")))))
