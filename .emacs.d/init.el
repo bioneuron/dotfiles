@@ -312,7 +312,8 @@
 (use-package vi-tilde-fringe
     :ensure t
     :config
-     (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode)
+    (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode)
+    (add-hook 'LaTeX-mode-hook 'vi-tilde-fringe-mode)
 )
 
 ; divide line
@@ -702,6 +703,13 @@
 
         (add-hook 'org-mode-hook 'olivetti/org-mode))
 
+;(defun my-set-margins ()
+;  "Set margins in current buffer."
+;  (setq left-margin-width 30)
+;  (setq right-margin-width 2))
+;
+;(add-hook 'org-mode-hook 'my-set-margins)
+
 (add-hook 'org-mode-hook
       '(lambda ()
          (delete '("\\.pdf\\'" . default) org-file-apps)
@@ -914,6 +922,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Extra --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq file-name-handler-alist nil)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'LaTeX-mode-hook 'display-line-numbers-mode)
+
 ;(setq linum-mode -1)
 (setq sentence-end-double-space nil)
 (setq frame-title-format "Emacs")
@@ -1156,3 +1166,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(zenburn-theme which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try synosaurus smex origami org-ref org-noter-pdftools org-bullets olivetti ob-ipython nyan-mode mw-thesaurus multiple-cursors monokai-theme mode-icons matlab-mode magit lsp-ui lsp-ivy langtool julia-mode ivy-rich iedit ibuffer-projectile gnuplot fzf focus flycheck expand-region esup ess emacsql-sqlite3 elpy elfeed-org elfeed-goodies ein ebib doom-themes doom-modeline dirtree dictionary dap-mode counsel company-lsp company-box cdlatex buffer-move auctex all-the-icons-ivy all-the-icons-dired academic-phrases)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(flycheck-error ((t (:underline (:color "#F92672")))))
+ '(flycheck-info ((t (:underline (:color "#66D9EF")))))
+ '(flycheck-warning ((t (:underline (:color "#FD971F")))))
+ '(flyspell-duplicate ((t (:underline "green"))))
+ '(flyspell-incorrect ((t (:underline "red"))))
+ '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
+ '(ido-only-match ((t (:background "#008000"))))
+ '(langtool-errline ((t (:background "red" :foreground "black")))))
