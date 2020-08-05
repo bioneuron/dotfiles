@@ -314,6 +314,7 @@
     :config
     (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode)
     (add-hook 'LaTeX-mode-hook 'vi-tilde-fringe-mode)
+    ;(add-hook 'matlab-mode-hook 'vi-tilde-fringe-mode)
 )
 
 ; divide line
@@ -506,8 +507,9 @@
      '("\\.m\\'" . matlab-mode))
     (setq matlab-indent-function t)
     (setq matlab-shell-command "matlab")
-    (add-hook 'matlab-mode-hook 'auto-complete-mode))
-    (matlab-cedet-setup)
+    (add-hook 'matlab-mode-hook 'vi-tilde-fringe-mode)
+    ;(add-hook 'matlab-mode-hook 'auto-complete-mode)
+    (matlab-cedet-setup))
 )
  
 ;; Firs time install: (use-package matlab-mode :ensure: t ....) then change to above 
@@ -923,6 +925,7 @@
 (setq file-name-handler-alist nil)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'LaTeX-mode-hook 'display-line-numbers-mode)
+(add-hook 'matlab-mode-hook 'display-line-numbers-mode)
 
 ;(setq linum-mode -1)
 (setq sentence-end-double-space nil)
