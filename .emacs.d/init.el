@@ -184,10 +184,11 @@
 	  (elfeed-expose #'elfeed-search-toggle-all 'star))
     (global-set-key (kbd "C-x w") 'elfeed))
 
-(use-package elfeed-goodies
-    :ensure t
-    :config
-    (elfeed-goodies/setup))
+; cause error!!!
+;(use-package elfeed-goodies
+;    :ensure t
+;    :config
+;    (elfeed-goodies/setup))
 
 (use-package elfeed-org
     :ensure t
