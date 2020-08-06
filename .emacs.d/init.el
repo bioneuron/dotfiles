@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; init.el file ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; init.el file ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq gc-cons-threshold 100000000)
 
 (let ((file-name-handler-alist nil))
@@ -27,16 +27,16 @@
 (use-package try :ensure t)
 
 (use-package which-key
-    :ensure t
-    :config (which-key-mode))
+  :ensure t
+  :config (which-key-mode))
 
 (when (fboundp 'winner-mode)
   (winner-mode 1))
   
 (use-package ace-window
-    :ensure t
-    :config
-    (global-set-key (kbd "M-o") 'ace-window))
+  :ensure t
+  :config
+  (global-set-key (kbd "M-o") 'ace-window))
 
 (use-package fzf :ensure t)
 
@@ -92,45 +92,45 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ivy/swiper/counsel --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package counsel
-    :ensure t
-    :bind
-    (("M-y" . counsel-yank-pop)
-    :map ivy-minibuffer-map
-    ("M-y" . ivy-next-line)))
+  :ensure t
+  :bind
+  (("M-y" . counsel-yank-pop)
+  :map ivy-minibuffer-map
+  ("M-y" . ivy-next-line)))
 
 (use-package ivy
-    :ensure t
-    :diminish (ivy-mode)
-    :bind (("C-x b" . ivy-switch-buffer))
-    :config
-    (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-count-format "%d/%d ")
-    (setq ivy-display-style 'fancy))
+  :ensure t
+  :diminish (ivy-mode)
+  :bind (("C-x b" . ivy-switch-buffer))
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "%d/%d ")
+  (setq ivy-display-style 'fancy))
 
 (use-package swiper
-    :ensure t
-    :bind (("C-s" . swiper-isearch)
-	   ("C-r" . swiper-isearch)
-	   ("C-c C-r" . ivy-resume)
-	   ("M-x" . counsel-M-x)
+  :ensure t
+  :bind (("C-s" . swiper-isearch)
+  ("C-r" . swiper-isearch)
+  ("C-c C-r" . ivy-resume)
+  ("M-x" . counsel-M-x)
 	   ;;("C-x C-f" . counsel-find-file)
-	   )
-    :config
-    (progn
-	(ivy-mode 1)
-	(setq ivy-use-virtual-buffers t)
-	(setq ivy-display-style 'fancy)
-	(define-key read-expression-map (kbd "C-r") 'counsel-expression-history)))
+  )
+  :config
+  (progn
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-display-style 'fancy)
+      (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)))
 
 (use-package avy
-    :ensure t
-    :bind ("M-s" . avy-goto-word-1)) ;; changed from char as per jcs
+  :ensure t
+  :bind ("M-s" . avy-goto-word-1)) ;; changed from char as per jcs
 
 (use-package ivy-rich
-    :ensure t
-    :config
-    (ivy-rich-mode 1))
+  :ensure t
+  :config
+  (ivy-rich-mode 1))
 
 (use-package smex :ensure t)
 
@@ -176,13 +176,13 @@
     (quit-window))
 
 (use-package elfeed
-    :ensure t
-    :bind (:map elfeed-search-mode-map
-        	)
-    :config
-    (defalias 'elfeed-toggle-star
-	  (elfeed-expose #'elfeed-search-toggle-all 'star))
-    (global-set-key (kbd "C-x w") 'elfeed))
+  :ensure t
+  :bind (:map elfeed-search-mode-map
+	      )
+  :config
+  (defalias 'elfeed-toggle-star
+	(elfeed-expose #'elfeed-search-toggle-all 'star))
+  (global-set-key (kbd "C-x w") 'elfeed))
 
 ; cause error!!!
 ;(use-package elfeed-goodies
@@ -191,10 +191,10 @@
 ;    (elfeed-goodies/setup))
 
 (use-package elfeed-org
-    :ensure t
-    :config
-    (elfeed-org)
-    (setq rmh-elfeed-org-files (list "~/Dropbox/Apps/elfeed/elfeed.org")))
+  :ensure t
+  :config
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/Dropbox/Apps/elfeed/elfeed.org")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -213,19 +213,19 @@
 ;    (global-hungry-delete-mode))
 
 (use-package multiple-cursors
-    :ensure t
-    :config
-    (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-    ;(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-    ;(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-    ;(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+  :ensure t
+  :config
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  ;(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  ;(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  ;(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 )
 
 ; expand the marked region in semantic increments (negative prefix to reduce region)
 (use-package expand-region
-    :ensure t
-    :config 
-    (global-set-key (kbd "C-=") 'er/expand-region))
+  :ensure t
+  :config 
+  (global-set-key (kbd "C-=") 'er/expand-region))
 
 (setq save-interprogram-paste-before-kill t)
 
@@ -247,9 +247,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- eshell --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package exec-path-from-shell
-    :ensure t
-    :config
-    (exec-path-from-shell-initialize))
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -311,11 +311,11 @@
 ;;(doom-themes-org-config)
 
 (use-package vi-tilde-fringe
-    :ensure t
-    :config
-    (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode)
-    (add-hook 'LaTeX-mode-hook 'vi-tilde-fringe-mode)
-    ;(add-hook 'matlab-mode-hook 'vi-tilde-fringe-mode)
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook 'vi-tilde-fringe-mode)
+  (add-hook 'LaTeX-mode-hook 'vi-tilde-fringe-mode)
+  ;(add-hook 'matlab-mode-hook 'vi-tilde-fringe-mode)
 )
 
 ; divide line
@@ -326,44 +326,44 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Flycheck --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package flycheck
-    :ensure t
-    :init (global-flycheck-mode)
-    :config
-     ;; Custom fringe indicator
-	  (define-fringe-bitmap 'my-flycheck-fringe-indicator
-	    (vector #b00000000
-		    #b00000000
-		    #b00000000
-		    #b00000000
-		    #b00000000
-		    #b00000000
-		    #b00000000
-		    #b00011100
-		    #b00111110
-		    #b00111110
-		    #b00111110
-		    #b00011100
-		    #b00000000
-		    #b00000000
-		    #b00000000
-		    #b00000000
-		    #b00000000))
+  :ensure t
+  :init (global-flycheck-mode)
+  :config
+   ;; Custom fringe indicator
+	(define-fringe-bitmap 'my-flycheck-fringe-indicator
+	  (vector #b00000000
+		  #b00000000
+		  #b00000000
+		  #b00000000
+		  #b00000000
+		  #b00000000
+		  #b00000000
+		  #b00011100
+		  #b00111110
+		  #b00111110
+		  #b00111110
+		  #b00011100
+		  #b00000000
+		  #b00000000
+		  #b00000000
+		  #b00000000
+		  #b00000000))
 
-	  (flycheck-define-error-level 'error
-	    :severity 2
-	    :overlay-category 'flycheck-error-overlay
-	    :fringe-bitmap 'my-flycheck-fringe-indicator
-	    :fringe-face 'flycheck-fringe-error)
-	  (flycheck-define-error-level 'warning
-	    :severity 1
-	    :overlay-category 'flycheck-warning-overlay
-	    :fringe-bitmap 'my-flycheck-fringe-indicator
-	    :fringe-face 'flycheck-fringe-warning)
-	  (flycheck-define-error-level 'info
-	    :severity 0
-	    :overlay-category 'flycheck-info-overlay
-	    :fringe-bitmap 'my-flycheck-fringe-indicator
-	    :fringe-face 'flycheck-fringe-info)
+	(flycheck-define-error-level 'error
+	  :severity 2
+	  :overlay-category 'flycheck-error-overlay
+	  :fringe-bitmap 'my-flycheck-fringe-indicator
+	  :fringe-face 'flycheck-fringe-error)
+	(flycheck-define-error-level 'warning
+	  :severity 1
+	  :overlay-category 'flycheck-warning-overlay
+	  :fringe-bitmap 'my-flycheck-fringe-indicator
+	  :fringe-face 'flycheck-fringe-warning)
+	(flycheck-define-error-level 'info
+	  :severity 0
+	  :overlay-category 'flycheck-info-overlay
+	  :fringe-bitmap 'my-flycheck-fringe-indicator
+	  :fringe-face 'flycheck-fringe-info)
 )
 
 ;; Underline customization
@@ -384,40 +384,40 @@
 ;;Toggle company-mode and auto-complete-mode use <M-x company-mode/auto-complete-mode>
 ;;in mini-buffer
 (use-package company
-    :ensure t
-    :pin melpa
-    :config
-    (progn
-      (define-key company-active-map (kbd "C-n") 'company-select-next)
-      (define-key company-active-map (kbd "C-p") 'company-select-previous)
-      (add-hook 'after-init-hook 'global-company-mode)
-      ;;(setq company-show-doc-buffer nil)
-      (setq company-minimum-prefix-length 3)
-      (setq company-idle-delay 0.0)
-      (setq ess-use-company 'script-only))
+  :ensure t
+  :pin melpa
+  :config
+  (progn
+    (define-key company-active-map (kbd "C-n") 'company-select-next)
+    (define-key company-active-map (kbd "C-p") 'company-select-previous)
+    (add-hook 'after-init-hook 'global-company-mode)
+    ;;(setq company-show-doc-buffer nil)
+    (setq company-minimum-prefix-length 3)
+    (setq company-idle-delay 0.0)
+    (setq ess-use-company 'script-only))
 
     ;; English Auto-Complete using company
-      (add-hook 'after-init-hook 'global-company-mode)
+    (add-hook 'after-init-hook 'global-company-mode)
 
-      (defun text-mode-hook-setup ()
-  ;; make `company-backends' local is critcal
-  ;; or else, you will have completion in every major mode, that's very annoying!
-     (make-local-variable 'company-backends)
-  ;; company-ispell is the plugin to complete words
-     (add-to-list 'company-backends 'company-ispell))
+    (defun text-mode-hook-setup ()
+    ;; make `company-backends' local is critcal
+    ;; or else, you will have completion in every major mode, that's very annoying!
+    (make-local-variable 'company-backends)
+    ;; company-ispell is the plugin to complete words
+   (add-to-list 'company-backends 'company-ispell))
 
-     (add-hook 'text-mode-hook 'text-mode-hook-setup)
+   (add-hook 'text-mode-hook 'text-mode-hook-setup)
 
-     (defun toggle-company-ispell ()
-       (interactive)
-       (cond
-	((memq 'company-ispell company-backends)
+   (defun toggle-company-ispell ()
+         (interactive)
+         (cond
+	 ((memq 'company-ispell company-backends)
 	 (setq company-backends (delete 'company-ispell company-backends))
 	 (message "company-ispell disabled"))
-	(t
+	 (t
 	 (add-to-list 'company-backends 'company-ispell)
-	 (message "company-ispell enabled!"))))    
-    )
+	 (message "company-ispell enabled!"))))
+   )
 
 ;;Standard Jedi.el setting --- After instalation, M-x jedi:install-server
 
@@ -431,19 +431,19 @@
 (setq lsp-keymap-prefix "s-l")
 
 (use-package lsp-mode
-    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-	   ;(python-mode . lsp)
-	   ;(r-mode . lsp)
-	   ;(c++-mode . lsp)
-	   ;(latex-mode . lsp)
-           ;;if you want which-key integration
-            (lsp-mode . lsp-enable-which-key-integration))
-    :commands lsp)
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+	 ;(python-mode . lsp)
+	 ;(r-mode . lsp)
+	 ;(c++-mode . lsp)
+	 ;(latex-mode . lsp)
+	 ;;if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+ :commands lsp)
 
 ;;optionally
 (use-package lsp-ui
-    :ensure t
-    :commands lsp-ui-mode)
+  :ensure t
+  :commands lsp-ui-mode)
 ;(setq lsp-completion-provider company-capf)
 ;;if you are helm user
 ;(use-package helm-lsp :ensure t :commands helm-lsp-workspace-symbol)
@@ -456,9 +456,9 @@
 ;;(use-package dap-LANGUAGE) to load the dap adapter for your language
 
 (use-package company-lsp
-    :ensure t
-    :config
-    (push 'company-lsp company-backends))
+  :ensure t
+  :config
+  (push 'company-lsp company-backends))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -473,18 +473,18 @@
 ;(setq elpy-rpc-python-command "~/Software/anaconda3/envs/neuro001/bin/python")
 
 (use-package virtualenvwrapper
-    :ensure t
-    :config
-    (venv-initialize-interactive-shells)
-    (venv-initialize-eshell))
+  :ensure t
+  :config
+  (venv-initialize-interactive-shells)
+  (venv-initialize-eshell))
 
 ;(venv-workon "neuro001")
 ;(setq lsp-python-executable-cmd "~/Software/anaconda3/envs/neuro001/bin/python")
 
 (use-package elpy
-    :ensure t
-    :init
-    (elpy-enable))
+  :ensure t
+  :init
+  (elpy-enable))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -500,37 +500,38 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- matlab --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package matlab
-    :ensure matlab-mode
-    :config
-    (progn
-    (add-to-list
-     'auto-mode-alist
-     '("\\.m\\'" . matlab-mode))
-    (setq matlab-indent-function t)
-    (setq matlab-shell-command "matlab")
-    (add-hook 'matlab-mode-hook 'vi-tilde-fringe-mode)
-    ;(add-hook 'matlab-mode-hook 'auto-complete-mode)
-    (matlab-cedet-setup))
+  :ensure matlab-mode
+  :config
+  (progn
+  (add-to-list
+   'auto-mode-alist
+   '("\\.m\\'" . matlab-mode))
+  (setq matlab-indent-function t)
+  (setq matlab-shell-command "matlab")
+  (add-hook 'matlab-mode-hook 'vi-tilde-fringe-mode)
+  ;(add-hook 'matlab-mode-hook 'auto-complete-mode)
+  (matlab-cedet-setup)
+  )
 )
- 
+
 ;; Firs time install: (use-package matlab-mode :ensure: t ....) then change to above 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- ess --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package ess
-    :ensure t
-    :config
-    ;(require 'ess-site)
-    (setq ess-use-auto-complete t)
-    (setq inferior-ess-r-program "/usr/bin/R")
-    (setq inferior-julia-program-name "/usr/bin/julia"))
+  :ensure t
+  :config
+  ;(require 'ess-site)
+  (setq ess-use-auto-complete t)
+  (setq inferior-ess-r-program "/usr/bin/R")
+  (setq inferior-julia-program-name "/usr/bin/julia"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- AUCTEX --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package auctex
-    :defer t
-    :ensure t)
+  :defer t
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -538,14 +539,14 @@
 ;; package: gnuplot
 ;; these lines enable the use of gnuplot mode
 (use-package gnuplot
-    :ensure t
-    :config
-    (progn
-    (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
-    (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot mode" t)
+  :ensure t
+  :config
+  (progn
+  (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
+  (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot mode" t)
 
-    ;; this line automatically causes all files with the .gp extension to be loaded into gnuplot mode
-    (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))))
+  ;; this line automatically causes all files with the .gp extension to be loaded into gnuplot mode
+  (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -553,20 +554,20 @@
 ;; package: gnuplot
 ;; these lines enable the use of gnuplot mode
 (use-package ein
-    :ensure t
-    :config
-    (setq ein:output-area-inlined-images t))
+  :ensure t
+  :config
+  (setq ein:output-area-inlined-images t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Markdown --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package markdown-mode
-    :ensure t
-    :commands (markdown-mode gfm-mode)
-    :mode (("README\\.md\\'" . gfm-mode)
-	   ("\\.md\\'" . markdown-mode)
-	   ("\\.markdown\\'" . markdown-mode))
-    :init (setq markdown-command "multimarkdown"))
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+	 ("\\.md\\'" . markdown-mode)
+	 ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -574,8 +575,8 @@
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
 (use-package org 
-    :ensure t
-    :pin org)
+  :ensure t
+  :pin org)
 
 (use-package htmlize :ensure t)
 
@@ -639,23 +640,23 @@
 (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
 
 (use-package org-bullets
-    :ensure t
-    :config 
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  :ensure t
+  :config 
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package cdlatex
-    :ensure t
-    :config
-    (defun krofna-hack ()
-    (when (looking-back (rx "$ "))
-      (save-excursion
-	(backward-char 1)
-	(org-toggle-latex-fragment))))
+  :ensure t
+  :config
+  (defun krofna-hack ()
+  (when (looking-back (rx "$ "))
+    (save-excursion
+      (backward-char 1)
+      (org-toggle-latex-fragment))))
 
-    (add-hook 'org-mode-hook
-	    (lambda ()
-	      (org-cdlatex-mode)
-	      (add-hook 'post-self-insert-hook #'krofna-hack 'append 'local)))
+  (add-hook 'org-mode-hook
+          (lambda ()
+          (org-cdlatex-mode)
+          (add-hook 'post-self-insert-hook #'krofna-hack 'append 'local)))
 )
 
 ;; Linewrap | (org-fill-paragraph)
@@ -697,14 +698,14 @@
 ;; <C-c C-,>
 
 (use-package olivetti
-    :ensure t
-    :config
-    (defun olivetti/org-mode ()
-	"Custom Configuration for org-mode"
-	(olivetti-mode)
-	(olivetti-set-width 120))
+  :ensure t
+  :config
+  (defun olivetti/org-mode ()
+      "Custom Configuration for org-mode"
+      (olivetti-mode)
+      (olivetti-set-width 120))
 
-        (add-hook 'org-mode-hook 'olivetti/org-mode))
+      (add-hook 'org-mode-hook 'olivetti/org-mode))
 
 ;(defun my-set-margins ()
 ;  "Set margins in current buffer."
@@ -737,7 +738,11 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Research -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; pdf-tools
-(use-package pdf-tools :ensure t)
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install)
+  )
 
 ;;; Org-roam (causes "selceting buffer error")
 ;(use-package org-roam
@@ -775,8 +780,8 @@
 (use-package ebib :ensure t)
 
 (use-package org-pdftools
-    :ensure t
-    :hook (org-load . org-pdftools-setup-link))
+  :ensure t
+  :hook (org-load . org-pdftools-setup-link))
 
 (use-package org-noter-pdftools
   :ensure t
@@ -784,32 +789,32 @@
   :config
   (with-eval-after-load 'pdf-annot
     (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
-
+  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Icons and Powerline --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package mode-icons
-    :ensure t
-    :config
-    (mode-icons-mode))
+  :ensure t
+  :config
+  (mode-icons-mode))
 
 (use-package all-the-icons :ensure t)
 
 (use-package all-the-icons-ivy
-    :ensure t
-    :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
+  :ensure t
+  :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 
 (use-package all-the-icons-dired
-    :ensure t
-    :config
-    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
+  :ensure t
+  :config
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
 (use-package doom-modeline
-    :ensure t
-    :init (doom-modeline-mode 1)
-    :config
-    (setq doom-modeline-height 25)
-    (setq doom-modeline-bar-width 3))
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :config
+  (setq doom-modeline-height 25)
+  (setq doom-modeline-bar-width 3))
 
 ;(use-package spaceline
 ;  :ensure t
@@ -848,9 +853,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- undo-tree -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; undo-tree
 (use-package undo-tree
-    :ensure t
-    :config
-    (global-undo-tree-mode))
+  :ensure t
+  :config
+  (global-undo-tree-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -964,24 +969,24 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- Keybinding --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; buffer-move package
 (use-package buffer-move
-    :ensure t
-    :config
-    (progn
-	(global-set-key (kbd "C-c C-<left>") 'buf-move-left)
-	(global-set-key (kbd "C-c C-<right>") 'buf-move-right)
-	(global-set-key (kbd "C-c C-<down>") 'buf-move-down)
-	(global-set-key (kbd "C-c C-<up>") 'buf-move-up)
+  :ensure t
+  :config
+  (progn
+      (global-set-key (kbd "C-c C-<left>") 'buf-move-left)
+      (global-set-key (kbd "C-c C-<right>") 'buf-move-right)
+      (global-set-key (kbd "C-c C-<down>") 'buf-move-down)
+      (global-set-key (kbd "C-c C-<up>") 'buf-move-up)
 
-	(global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
-	(global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
-	(global-set-key (kbd "S-C-<down>") 'shrink-window)
-	(global-set-key (kbd "S-C-<up>") 'enlarge-window))
-    )
+      (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+      (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+      (global-set-key (kbd "S-C-<down>") 'shrink-window)
+      (global-set-key (kbd "S-C-<up>") 'enlarge-window))
+  )
 
 (use-package dirtree
-    :ensure t
-    :config
-    (windmove-default-keybindings))
+  :ensure t
+  :config
+  (windmove-default-keybindings))
 
 (global-set-key (kbd "<f5>") 'revert-buffer)
 
@@ -1030,24 +1035,22 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Projectile -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package projectile
-    :ensure t
-    :bind (:map projectile-mode-map
-                  ("s-p" . 'projectile-command-map)
-                  ("C-c p" . 'projectile-command-map)
-                )
-    :config 
-    (setq projectile-completion-system 'ivy)
-
-    (projectile-mode +1))
+  :ensure t
+  :bind (:map projectile-mode-map
+		("s-p" . 'projectile-command-map)
+		("C-c p" . 'projectile-command-map))
+  :config 
+  (setq projectile-completion-system 'ivy)
+  (projectile-mode +1))
 
 (use-package ibuffer-projectile
-    :ensure t
-    :config 
-    (add-hook 'ibuffer-hook
-	(lambda ()
-	  (ibuffer-projectile-set-filter-groups)
-	  (unless (eq ibuffer-sorting-mode 'alphabetic)
-	    (ibuffer-do-sort-by-alphabetic))))
+  :ensure t
+  :config 
+  (add-hook 'ibuffer-hook
+      (lambda ()
+	(ibuffer-projectile-set-filter-groups)
+	(unless (eq ibuffer-sorting-mode 'alphabetic)
+	  (ibuffer-do-sort-by-alphabetic))))
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1085,12 +1088,12 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Hydra -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package hydra
-    :ensure t
-    :config
-    (defhydra hydra-zoom (global-map "<f2>")
-    "zoom"
-    ("g" text-scale-increase "in")
-    ("l" text-scale-decrease "out"))
+  :ensure t
+  :config
+  (defhydra hydra-zoom (global-map "<f2>")
+  "zoom"
+  ("g" text-scale-increase "in")
+  ("l" text-scale-decrease "out"))
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1102,30 +1105,30 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- English Language -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package dictionary
-    :ensure t
-    :config
-    (global-set-key (kbd "C-c M-d") 'dictionary-lookup-definition))
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c M-d") 'dictionary-lookup-definition))
 
 (use-package synosaurus
-    :ensure t
-    :config
-    (global-set-key (kbd "C-c M-s") 'synosaurus-lookup))
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c M-s") 'synosaurus-lookup))
 
 ;; Meriam-Webster Dictionary
 					; 0f6d00d3-4925-450b-8581-b364b0851ace
 					; 41324f64-09d9-4897-9a01-5f8cb8138607
 					;(add-to-list 'load-path "~/.emacs.d/langtool/")
 (use-package mw-thesaurus
-    :ensure t
-    :config
-    (setq mw-thesaurus--api-key "41324f64-09d9-4897-9a01-5f8cb8138607"))
+  :ensure t
+  :config
+  (setq mw-thesaurus--api-key "41324f64-09d9-4897-9a01-5f8cb8138607"))
 
 ;; Langtool (Grammar Check)
 (use-package langtool
-    :ensure t
-    :init
-    (setq langtool-language-tool-jar "~/Downloads/LanguageTool-5.0/languagetool-commandline.jar")  
-    :config
+  :ensure t
+  :init
+  (setq langtool-language-tool-jar "~/Downloads/LanguageTool-5.0/languagetool-commandline.jar")  
+  :config
 
 ;(add-hook 'org-mode-hook
 ;           (lambda () 
@@ -1134,11 +1137,8 @@
 (add-hook 'text-mode-hook
           '(lambda ()
              (local-set-key (kbd "C-c g 1") 'langtool-check)
-
              (local-set-key (kbd "C-c g 0") 'langtool-check-done)
-
 	     (local-set-key (kbd "C-c g n") 'langtool-goto-next-error)
-
 	     (local-set-key (kbd "C-c g p") 'langtool-goto-previous-error)
              ))
 )
@@ -1170,23 +1170,55 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(zenburn-theme which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try synosaurus smex origami org-ref org-noter-pdftools org-bullets olivetti ob-ipython nyan-mode mw-thesaurus multiple-cursors monokai-theme mode-icons matlab-mode magit lsp-ui lsp-ivy langtool julia-mode ivy-rich iedit ibuffer-projectile gnuplot fzf focus flycheck expand-region esup ess emacsql-sqlite3 elpy elfeed-org elfeed-goodies ein ebib doom-themes doom-modeline dirtree dictionary dap-mode counsel company-lsp company-box cdlatex buffer-move auctex all-the-icons-ivy all-the-icons-dired academic-phrases)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(flycheck-error ((t (:underline (:color "#F92672")))))
- '(flycheck-info ((t (:underline (:color "#66D9EF")))))
- '(flycheck-warning ((t (:underline (:color "#FD971F")))))
- '(flyspell-duplicate ((t (:underline "green"))))
- '(flyspell-incorrect ((t (:underline "red"))))
- '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
- '(ido-only-match ((t (:background "#008000"))))
- '(langtool-errline ((t (:background "red" :foreground "black")))))
+
+(defvar my/bib-file-location "~/Dropbox/bibliography/ref/references.bib"
+  "Where I keep my bib file.")
+
+(use-package helm-bibtex
+  :ensure t
+  :config
+  (autoload 'helm-bibtex "helm-bibtex" "" t)
+  (setq bibtex-completion-pdf-symbol "⌘")    ;; pdf is availabe
+  (setq bibtex-completion-notes-symbol "✎")  ;; note is availabe 
+
+  (setq bibtex-completion-pdf-field "File")
+  (setq bibtex-completion-pdf-extension '(".pdf" ".djvu"))
+
+  (setq bibtex-completion-display-formats
+    '((article       . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} ${journal:40}")
+      (inbook        . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+      (incollection  . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+      (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+      (t             . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*}")))
+  )
+
+;; ivy-bibtex requires ivy's `ivy--regex-ignore-order` regex builder, which
+;; ignores the order of regexp tokens when searching for matching candidates.
+;; Add something like this to your init file:
+
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
+(setq reftex-plug-into-AUCTeX t)
+
+;(require 'ivy-bibtex)
+;(global-set-key (kbd "C-c C-r") 'ivy-bibtex)
+
+;; telling bibtex-completion where your bibliographies can be found
+(setq bibtex-completion-bibliography my/bib-file-location)
+
+;; specify the path of the note
+(setq bibtex-completion-notes-path "~/Dropbox/bibliography/ref/notes.org")
+
+;; with C-c C-o to open pdf files with pdf-tools in org-mode.
+(defun my/org-ref-open-pdf-at-point ()
+  "Open the pdf for bibtex key under point if it exists."
+  (interactive)
+  (let* ((results (org-ref-get-bibtex-key-and-file))
+         (key (car results))
+	 (pdf-file (car (bibtex-completion-find-pdf key))))
+    (if (file-exists-p pdf-file)
+	(org-open-file pdf-file)
+      (message "No PDF found for %s" key))))
+
+(setq org-ref-open-pdf-function 'my/org-ref-open-pdf-at-point)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
