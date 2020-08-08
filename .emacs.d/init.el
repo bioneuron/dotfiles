@@ -798,6 +798,7 @@
   :ensure t
   :config
   (pdf-tools-install)
+  (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)
   )
 
 ;; Org-roam (causes "selceting buffer error")
