@@ -404,11 +404,11 @@
     ;; or else, you will have completion in every major mode, that's very annoying!
     (make-local-variable 'company-backends)
     ;; company-ispell is the plugin to complete words
-   (add-to-list 'company-backends 'company-ispell))
+    (add-to-list 'company-backends 'company-ispell))
 
-   (add-hook 'text-mode-hook 'text-mode-hook-setup)
+    (add-hook 'text-mode-hook 'text-mode-hook-setup)
 
-   (defun toggle-company-ispell ()
+    (defun toggle-company-ispell ()
          (interactive)
          (cond
 	 ((memq 'company-ispell company-backends)
@@ -438,7 +438,7 @@
 	 ;(latex-mode . lsp)
 	 ;;if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
- :commands lsp)
+  :commands lsp)
 
 ;;optionally
 (use-package lsp-ui
@@ -531,7 +531,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-- AUCTEX --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package auctex
   :defer t
-  :ensure t)
+  :ensure t
+  :config
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
+  (setq reftex-plug-into-AUCTeX t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -719,9 +722,26 @@
          (delete '("\\.pdf\\'" . default) org-file-apps)
          (add-to-list 'org-file-apps '("\\.pdf\\'" . "evince %s"))))
 
+;(use-package org-journal
+;  :ensure t
+;  :defer t
+;  :init
+;  ;; Change default prefix key; needs to be set before loading org-journal
+;  (setq org-journal-prefix-key "C-c j ")
+;  :config
+;  (setq org-journal-dir "~/Dropbox/org/journal/"
+;        org-journal-date-format "%A, %d %B %Y"))
+;
+;(use-package deft
+;  :bind ("<f8>" . deft)
+;  :commands (deft)
+;  :config (setq deft-directory "~/Dropbox/org/Notes/"
+;                deft-extensions '("md" "org")))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Bibliography -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar my/bib-file-location "~/Dropbox/bibliography/ref/references.bib"
+  "Where I keep my bib file.")
 
 (use-package org-ref
   :ensure t
@@ -733,7 +753,43 @@
 	      org-ref-default-bibliography '("~/Dropbox/bibliography/ref/references.bib")
 	      org-ref-pdf-directory "~/Dropbox/bibliography/ref/bibtex-pdfs/")
 	)
-	
+
+(use-package helm-bibtex
+  :ensure t
+  :config
+  (autoload 'helm-bibtex "helm-bibtex" "" t)
+  (setq bibtex-completion-pdf-symbol "⌘")    ;; pdf is availabe
+  (setq bibtex-completion-notes-symbol "✎")  ;; note is availabe 
+
+  (setq bibtex-completion-pdf-field "File")
+  (setq bibtex-completion-pdf-extension '(".pdf" ".djvu"))
+
+  (setq bibtex-completion-display-formats
+    '((article       . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} ${journal:40}")
+      (inbook        . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+      (incollection  . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+      (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+      (t             . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*}")))
+  )
+
+(setq bibtex-completion-bibliography my/bib-file-location)
+
+;; specify the path of the note
+(setq bibtex-completion-notes-path "~/Dropbox/bibliography/ref/notes.org")
+
+;; with C-c C-o to open zotera pdf files in org-mode.
+(defun my/org-ref-open-pdf-at-point ()
+  "Open the pdf for bibtex key under point if it exists."
+  (interactive)
+  (let* ((results (org-ref-get-bibtex-key-and-file))
+         (key (car results))
+	 (pdf-file (car (bibtex-completion-find-pdf key))))
+    (if (file-exists-p pdf-file)
+	(org-open-file pdf-file)
+      (message "No PDF found for %s" key))))
+
+(setq org-ref-open-pdf-function 'my/org-ref-open-pdf-at-point)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Research -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -744,34 +800,41 @@
   (pdf-tools-install)
   )
 
-;;; Org-roam (causes "selceting buffer error")
-;(use-package org-roam
-;      :ensure t
-;      :hook
-;      (after-init . org-roam-mode)
-;      :custom
-;      (org-roam-directory "~/Dropbox/org/Notes/")
-;      :bind (:map org-roam-mode-map
-;              (("C-c n l" . org-roam)
-;               ("C-c n f" . org-roam-find-file)
-;               ("C-c n g" . org-roam-graph-show))
-;              :map org-mode-map
-;              (("C-c n i" . org-roam-insert))
-;              (("C-c n I" . org-roam-insert-immediate))))
-;
-;(use-package org-roam-server
-;  :ensure t
-;  :config
-;  (setq org-roam-server-mode nil
-;        org-roam-server-host "127.0.0.1"
-;        org-roam-server-port 8080
-;        org-roam-server-export-inline-images t
-;        org-roam-server-authenticate nil
-;        org-roam-server-network-poll t
-;        org-roam-server-network-arrows nil
-;        org-roam-server-network-label-truncate t
-;        org-roam-server-network-label-truncate-length 60
-;        org-roam-server-network-label-wrap-length 20))
+;; Org-roam (causes "selceting buffer error")
+(use-package org-roam
+      :ensure t
+      :hook
+      (after-init . org-roam-mode)
+      :custom
+      (org-roam-directory "~/Dropbox/org/Notes/")
+      :bind (:map org-roam-mode-map
+              (("C-c n l" . org-roam)
+               ("C-c n f" . org-roam-find-file)
+               ("C-c n g" . org-roam-graph-show))
+              :map org-mode-map
+              (("C-c n i" . org-roam-insert))
+              (("C-c n I" . org-roam-insert-immediate))))
+
+(use-package org-roam-server
+  :ensure t
+  :config
+  (setq org-roam-server-mode nil
+        org-roam-server-host "127.0.0.1"
+        org-roam-server-port 8080
+        org-roam-server-export-inline-images t
+        org-roam-server-authenticate nil
+        org-roam-server-network-poll t
+        org-roam-server-network-arrows nil
+        org-roam-server-network-label-truncate t
+        org-roam-server-network-label-truncate-length 60
+        org-roam-server-network-label-wrap-length 20))
+
+;; If you installed via MELPA
+(use-package org-roam-bibtex
+  :after org-roam
+  :hook (org-roam-mode . org-roam-bibtex-mode)
+  :bind (:map org-mode-map
+              (("C-c n a" . orb-note-actions))))
 
 (use-package org-noter :ensure t)
 
@@ -1170,55 +1233,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defvar my/bib-file-location "~/Dropbox/bibliography/ref/references.bib"
-  "Where I keep my bib file.")
-
-(use-package helm-bibtex
-  :ensure t
-  :config
-  (autoload 'helm-bibtex "helm-bibtex" "" t)
-  (setq bibtex-completion-pdf-symbol "⌘")    ;; pdf is availabe
-  (setq bibtex-completion-notes-symbol "✎")  ;; note is availabe 
-
-  (setq bibtex-completion-pdf-field "File")
-  (setq bibtex-completion-pdf-extension '(".pdf" ".djvu"))
-
-  (setq bibtex-completion-display-formats
-    '((article       . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} ${journal:40}")
-      (inbook        . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
-      (incollection  . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-      (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-      (t             . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*}")))
-  )
-
-;; ivy-bibtex requires ivy's `ivy--regex-ignore-order` regex builder, which
-;; ignores the order of regexp tokens when searching for matching candidates.
-;; Add something like this to your init file:
-
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
-(setq reftex-plug-into-AUCTeX t)
-
-;(require 'ivy-bibtex)
-;(global-set-key (kbd "C-c C-r") 'ivy-bibtex)
-
-;; telling bibtex-completion where your bibliographies can be found
-(setq bibtex-completion-bibliography my/bib-file-location)
-
-;; specify the path of the note
-(setq bibtex-completion-notes-path "~/Dropbox/bibliography/ref/notes.org")
-
-;; with C-c C-o to open pdf files with pdf-tools in org-mode.
-(defun my/org-ref-open-pdf-at-point ()
-  "Open the pdf for bibtex key under point if it exists."
-  (interactive)
-  (let* ((results (org-ref-get-bibtex-key-and-file))
-         (key (car results))
-	 (pdf-file (car (bibtex-completion-find-pdf key))))
-    (if (file-exists-p pdf-file)
-	(org-open-file pdf-file)
-      (message "No PDF found for %s" key))))
-
-(setq org-ref-open-pdf-function 'my/org-ref-open-pdf-at-point)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(org-roam-bibtex zenburn-theme which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try synosaurus smex origami org-ref org-noter-pdftools org-bullets olivetti ob-ipython nyan-mode mw-thesaurus multiple-cursors monokai-theme mode-icons matlab-mode magit lsp-ui lsp-ivy langtool julia-mode ivy-rich ivy-bibtex iedit ibuffer-projectile gnuplot fzf focus flycheck expand-region esup ess emacsql-sqlite3 elpy elfeed-org elfeed-goodies ein ebib doom-themes doom-modeline dirtree dictionary dap-mode counsel company-lsp cdlatex buffer-move auctex all-the-icons-ivy all-the-icons-dired academic-phrases)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(flycheck-error ((t (:underline (:color "#F92672")))))
+ '(flycheck-info ((t (:underline (:color "#66D9EF")))))
+ '(flycheck-warning ((t (:underline (:color "#FD971F")))))
+ '(flyspell-duplicate ((t (:underline "green"))))
+ '(flyspell-incorrect ((t (:underline "red"))))
+ '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
+ '(ido-only-match ((t (:background "#008000"))))
+ '(langtool-errline ((t (:background "red" :foreground "black")))))
