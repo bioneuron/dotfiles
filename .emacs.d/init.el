@@ -731,12 +731,13 @@
 ;  :config
 ;  (setq org-journal-dir "~/Dropbox/org/journal/"
 ;        org-journal-date-format "%A, %d %B %Y"))
-;
-;(use-package deft
-;  :bind ("<f8>" . deft)
-;  :commands (deft)
-;  :config (setq deft-directory "~/Dropbox/org/Notes/"
-;                deft-extensions '("md" "org")))
+
+(use-package deft
+  :ensure t
+  :bind ("<f8>" . deft)
+  :commands (deft)
+  :config (setq deft-directory "/home/rasoul/Dropbox/org/Notes"
+                deft-extensions '("md" "org")))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- Bibliography -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -798,8 +799,54 @@
   :ensure t
   :config
   (pdf-tools-install)
-  (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)
+  (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode) 
   )
+
+;; midnite mode hook
+ (add-hook 'pdf-view-mode-hook (lambda ()
+                                 (pdf-view-midnight-minor-mode))) ; automatically turns on midnight-mode for pdfs
+
+;(setq pdf-view-midnight-colors '("#ff9900" . "#0a0a12" )) ; set the amber profile as default (see below) 
+;(setq pdf-view-midnight-colors '("#839496" . "#002b36" )) ; set the amber profile as default (see below) 
+
+(defun bms/pdf-no-filter ()
+  "View pdf without colour filter."
+  (interactive)
+  (pdf-view-midnight-minor-mode -1)
+  )
+
+;; change midnite mode colours functions
+(defun bms/pdf-midnite-original ()
+  "Set pdf-view-midnight-colors to original colours."
+  (interactive)
+  (setq pdf-view-midnight-colors '("#839496" . "#002b36" )) ; original values
+  (pdf-view-midnight-minor-mode)
+  )
+
+(defun bms/pdf-midnite-amber ()
+  "Set pdf-view-midnight-colors to amber on dark slate blue."
+  (interactive)
+  (setq pdf-view-midnight-colors '("#ff9900" . "#0a0a12" )) ; amber
+  (pdf-view-midnight-minor-mode)
+  )
+
+(defun bms/pdf-midnite-green ()
+  "Set pdf-view-midnight-colors to green on black."
+  (interactive)
+  (setq pdf-view-midnight-colors '("#00B800" . "#000000" )) ; green 
+  (pdf-view-midnight-minor-mode)
+  )
+
+(defun bms/pdf-midnite-colour-schemes ()
+  "Midnight mode colour schemes bound to keys"
+        (local-set-key (kbd "!") (quote bms/pdf-no-filter))
+        (local-set-key (kbd "@") (quote bms/pdf-midnite-amber)) 
+        (local-set-key (kbd "#") (quote bms/pdf-midnite-green))
+        (local-set-key (kbd "$") (quote bms/pdf-midnite-original))
+ )  
+
+(add-hook 'pdf-view-mode-hook 'bms/pdf-midnite-colour-schemes)
+
 
 ;; Org-roam (causes "selceting buffer error")
 (use-package org-roam
@@ -832,12 +879,28 @@
 
 ;; If you installed via MELPA
 (use-package org-roam-bibtex
+  :ensure t 
   :after org-roam
   :hook (org-roam-mode . org-roam-bibtex-mode)
   :bind (:map org-mode-map
               (("C-c n a" . orb-note-actions))))
 
-(use-package org-noter :ensure t)
+(use-package org-noter
+  :after (:any org pdf-view)
+  :bind ("<f9>" . org-noter)
+  :config
+  (setq
+   org_notes (concat (getenv "HOME") "~/Dropbox/org/Notes")
+   ;; The WM can handle splits
+   org-noter-notes-window-location 'other-frame
+   ;; Please stop opening frames
+   org-noter-always-create-frame nil
+   ;; I want to see the whole file
+   org-noter-hide-other nil
+   ;; Everything is relative to the main notes file
+   org-noter-notes-search-path (list org_notes)
+   )
+  )
 
 (use-package academic-phrases :ensure t)
 
@@ -1234,23 +1297,3 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(org-roam-bibtex zenburn-theme which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try synosaurus smex origami org-ref org-noter-pdftools org-bullets olivetti ob-ipython nyan-mode mw-thesaurus multiple-cursors monokai-theme mode-icons matlab-mode magit lsp-ui lsp-ivy langtool julia-mode ivy-rich ivy-bibtex iedit ibuffer-projectile gnuplot fzf focus flycheck expand-region esup ess emacsql-sqlite3 elpy elfeed-org elfeed-goodies ein ebib doom-themes doom-modeline dirtree dictionary dap-mode counsel company-lsp cdlatex buffer-move auctex all-the-icons-ivy all-the-icons-dired academic-phrases)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(flycheck-error ((t (:underline (:color "#F92672")))))
- '(flycheck-info ((t (:underline (:color "#66D9EF")))))
- '(flycheck-warning ((t (:underline (:color "#FD971F")))))
- '(flyspell-duplicate ((t (:underline "green"))))
- '(flyspell-incorrect ((t (:underline "red"))))
- '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
- '(ido-only-match ((t (:background "#008000"))))
- '(langtool-errline ((t (:background "red" :foreground "black")))))
