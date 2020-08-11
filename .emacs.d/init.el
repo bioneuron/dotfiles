@@ -613,10 +613,22 @@
 
 (setq org-highlight-latex-and-related '(latex))
 
-(setq org-agenda-files (list "~/Dropbox/org/task.org"
+(setq org-agenda-files (list "~/Dropbox/org/tasks.org"
 			     "~/Dropbox/org/neuro001.org"
-                             "~/Dropbox/org/covid-19.org" 
+                             "~/Dropbox/org/covid-19.org"
+                             "~/Dropbox/org/i.org"
                              "~/Dropbox/org/bio001.org"))
+
+    (setq org-capture-templates
+          '(("l" "Link" entry (file+headline "~/Dropbox/org/links.org" "Links")
+             "* %a %^g\n %?\n %T\n %i")
+
+            ("t" "To Do Item" entry (file+headline "~/Dropbox/org/tasks.org" "To Do and Notes")
+             "* TODO %?\n%u" :prepend t)
+
+            ("n" "Note" entry (file+olp "~/Dropbox/org/i.org" "Notes")
+             "* %u %? " :prepend t)
+            ))
 
 (use-package ob-ipython :ensure t)
 
@@ -722,21 +734,30 @@
          (delete '("\\.pdf\\'" . default) org-file-apps)
          (add-to-list 'org-file-apps '("\\.pdf\\'" . "evince %s"))))
 
-;(use-package org-journal
-;  :ensure t
-;  :defer t
-;  :init
-;  ;; Change default prefix key; needs to be set before loading org-journal
-;  (setq org-journal-prefix-key "C-c j ")
-;  :config
-;  (setq org-journal-dir "~/Dropbox/org/journal/"
-;        org-journal-date-format "%A, %d %B %Y"))
+(use-package org-journal
+  :ensure t
+  :defer t
+  :init
+  ;; Change default prefix key; needs to be set before loading org-journal
+  (setq org-journal-prefix-key "C-c j ")
+  :config
+  (setq org-journal-dir "~/Dropbox/org/journal/"
+        org-journal-date-format "%A, %d %B %Y"))
 
+;(defun org-journal-save-entry-and-exit()
+;  "Simple convenience function.
+;  Saves the buffer of the current day's entry and kills the window
+;  Similar to org-capture like behavior"
+;  (interactive)
+;  (save-buffer)
+;  (kill-buffer-and-window))
+;(define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
+;
 (use-package deft
   :ensure t
-  :bind ("<f8>" . deft)
+  :bind ("<f7>" . deft)
   :commands (deft)
-  :config (setq deft-directory "/home/rasoul/Dropbox/org/Notes"
+  :config (setq deft-directory "~/Dropbox/org/notes"
                 deft-extensions '("md" "org")))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -847,21 +868,20 @@
 
 (add-hook 'pdf-view-mode-hook 'bms/pdf-midnite-colour-schemes)
 
-
 ;; Org-roam (causes "selceting buffer error")
 (use-package org-roam
       :ensure t
       :hook
       (after-init . org-roam-mode)
       :custom
-      (org-roam-directory "~/Dropbox/org/Notes/")
+      (org-roam-directory "~/Dropbox/org/notes/")
       :bind (:map org-roam-mode-map
-              (("C-c n l" . org-roam)
-               ("C-c n f" . org-roam-find-file)
-               ("C-c n g" . org-roam-graph-show))
+		  (("C-c n l" . org-roam)
+                   ("C-c n f" . org-roam-find-file)
+                   ("C-c n g" . org-roam-graph))
               :map org-mode-map
-              (("C-c n i" . org-roam-insert))
-              (("C-c n I" . org-roam-insert-immediate))))
+                  (("C-c n i" . org-roam-insert))
+                  (("C-c n I" . org-roam-insert-immediate))))
 
 (use-package org-roam-server
   :ensure t
@@ -887,10 +907,10 @@
 
 (use-package org-noter
   :after (:any org pdf-view)
-  :bind ("<f9>" . org-noter)
+  :bind ("<f8>" . org-noter)
   :config
   (setq
-   org_notes (concat (getenv "HOME") "~/Dropbox/org/Notes")
+   org_notes (concat (getenv "HOME") "~/Dropbox/org/notes")
    ;; The WM can handle splits
    org-noter-notes-window-location 'other-frame
    ;; Please stop opening frames
