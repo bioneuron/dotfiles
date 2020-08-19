@@ -613,6 +613,7 @@
 
 (setq org-highlight-latex-and-related '(latex))
 
+(global-set-key (kbd "C-c c") 'org-capture)
 (setq org-agenda-files (list "~/Dropbox/org/tasks.org"
 			     "~/Dropbox/org/neuro001.org"
                              "~/Dropbox/org/covid-19.org"
@@ -1294,7 +1295,6 @@
 
 
 
-
 ;(setq-default left-margin-width 2 right-margin-width 4) ; Define new widths.
 ;(set-window-buffer nil (current-buffer)) ; Use them now.
 
@@ -1317,3 +1317,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;- END -;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(zenburn-theme which-key virtualenvwrapper vi-tilde-fringe use-package undo-tree try synosaurus smex origami org-ref org-noter-pdftools org-journal org-bullets olivetti ob-ipython nyan-mode mw-thesaurus multiple-cursors monokai-theme mode-icons matlab-mode magit lsp-ui lsp-ivy langtool julia-mode ivy-rich ivy-bibtex iedit ibuffer-projectile gnuplot fzf focus flycheck expand-region esup ess elpy elfeed-org elfeed-goodies ein ebib doom-themes doom-modeline dirtree dictionary deft dap-mode counsel company-lsp cdlatex buffer-move auctex all-the-icons-ivy all-the-icons-dired academic-phrases)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(flycheck-error ((t (:underline (:color "#F92672")))))
+ '(flycheck-info ((t (:underline (:color "#66D9EF")))))
+ '(flycheck-warning ((t (:underline (:color "#FD971F")))))
+ '(flyspell-duplicate ((t (:underline "green"))))
+ '(flyspell-incorrect ((t (:underline "red"))))
+ '(ido-incomplete-regexp ((t (:foreground "#0000FF"))))
+ '(ido-only-match ((t (:background "#008000"))))
+ '(langtool-errline ((t (:background "red" :foreground "black")))))
