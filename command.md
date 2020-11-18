@@ -371,3 +371,21 @@ ess-julia-mode for auto-completion
 <C-x t>
 ## Line number
 display-line-numbers-mode is better that linum-mode
+
+--------------------------------------------------------------------------------------------------------------
+# If dnf is slow! Disable fastmirror!
+
+In my humble opinion fastestmirror just slows things down. It sits there while "determining fastest mirror", several times, so I've given up on it. What I've been doing, and it seems to be working well, is adding the following to dnf.conf:
+PHP Code:
+
+deltarpm=false
+keepcache=true
+ip_resolve=4 
+
+The deltarpm thing is also a slug. I have no need for this "feature".
+
+Also add country=us (use your own country code) to the end of all of the "metalink" lines for the fedora repo files in /etc/yum.repos.d/
+
+I feel as though I've seen a dramatic increase in the overall speed for dnf transactions by making these changes in the configs. 
+
+--------------------------------------------------------------------------------------------------------------
